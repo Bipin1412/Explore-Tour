@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { authenticateRequest } from "@/lib/auth/server-auth";
 import { createPendingBooking } from "@/lib/db";
 import { buildUpiIntent, generatePaymentRef } from "@/lib/payment";
 import { sendBookingEmail } from "@/lib/mailer";
@@ -6,8 +7,27 @@ import { bookingSchema } from "@/lib/validators/booking";
 
 export async function POST(request: Request) {
   try {
+    const session = await authenticateRequest(request);
+    if (!session) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Login is required before booking."
+        },
+        { status: 401 }
+      );
+    }
+
     const payload = await request.json();
-    const parsed = bookingSchema.safeParse(payload);
+    const parsed = bookingSchema.safeParse({
+      ...payload,
+      fullName: session.user.fullName,
+      email: session.user.email,
+      phone:
+        typeof payload.phone === "string" && payload.phone.trim().length > 0
+          ? payload.phone.trim()
+          : session.user.phoneNumber ?? ""
+    });
 
     if (!parsed.success) {
       return NextResponse.json(

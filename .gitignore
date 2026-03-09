@@ -16,9 +16,11 @@ pnpm-debug.log*
 
 dist/
 coverage/
+tsconfig.tsbuildinfo
 
 prisma/*.db
 prisma/*.db-journal
 
 .DS_Store
 Thumbs.db
+backend/target/

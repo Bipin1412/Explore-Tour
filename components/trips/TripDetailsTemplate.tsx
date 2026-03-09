@@ -1,4 +1,5 @@
 import Image from "next/image";
+import TripLoginModal from "@/components/auth/TripLoginModal";
 import DynamicQRPayment from "@/components/booking/DynamicQRPayment";
 import ItineraryAccordion from "@/components/trips/ItineraryAccordion";
 import TripFaqAccordion from "@/components/trips/TripFaqAccordion";
@@ -37,6 +38,8 @@ export default function TripDetailsTemplate({ trip }: TripDetailsTemplateProps) 
 
   return (
     <div className="pb-16">
+      <TripLoginModal tripName={trip.name} />
+
       <section className="relative isolate h-[65vh] overflow-hidden">
         <Image src={trip.heroImage} alt={trip.name} fill priority className="object-cover" sizes="100vw" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/35 to-black/65" />

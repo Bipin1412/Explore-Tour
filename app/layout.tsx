@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Manrope, Sora } from "next/font/google";
+import AuthProvider from "@/components/auth/AuthProvider";
 import AnimatedNatureBackground from "@/components/common/AnimatedNatureBackground";
 import "./globals.css";
 
@@ -27,8 +28,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${sora.variable} ${manrope.variable} relative font-body antialiased`}>
-        <AnimatedNatureBackground />
-        <div className="relative z-10">{children}</div>
+        <AuthProvider>
+          <AnimatedNatureBackground />
+          <div className="relative z-10">{children}</div>
+        </AuthProvider>
       </body>
     </html>
   );

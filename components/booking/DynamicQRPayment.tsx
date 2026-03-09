@@ -1,12 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useAuth } from "@/components/auth/AuthProvider";
 import { bookingSchema } from "@/lib/validators/booking";
 
-type FormErrors = Partial<
-  Record<"fullName" | "email" | "phone" | "travelers" | "departureMonth" | "notes", string>
->;
+type FormErrors = Partial<Record<"phone" | "travelers" | "departureMonth" | "notes", string>>;
 
 interface DynamicQRPaymentProps {
   tripId: string;
@@ -37,10 +37,10 @@ const departureMonths = [
 
 export default function DynamicQRPayment({ tripId, tripName, tripPrice }: DynamicQRPaymentProps) {
   const router = useRouter();
+  const pathname = usePathname();
+  const { isReady, isAuthenticated, token, user, logout } = useAuth();
 
   const [form, setForm] = useState({
-    fullName: "",
-    email: "",
     phone: "",
     travelers: "1",
     departureMonth: departureMonths[new Date().getMonth()] ?? "January",
@@ -50,20 +50,34 @@ export default function DynamicQRPayment({ tripId, tripName, tripPrice }: Dynami
   const [isProceeding, setIsProceeding] = useState(false);
   const [serverMessage, setServerMessage] = useState("");
 
+  useEffect(() => {
+    if (user?.phoneNumber) {
+      setForm((prev) => ({
+        ...prev,
+        phone: prev.phone || user.phoneNumber || ""
+      }));
+    }
+  }, [user]);
+
   const totalAmount = useMemo(() => tripPrice * Number(form.travelers || 1), [tripPrice, form.travelers]);
+  const nextPath = pathname || "/";
 
   const updateField = (field: keyof typeof form, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
   const validateBookingDetails = () => {
+    if (!user) {
+      return null;
+    }
+
     const parsed = bookingSchema.safeParse({
       tripId,
       tripName,
       tripPrice: totalAmount,
-      fullName: form.fullName.trim(),
-      email: form.email.trim(),
-      phone: form.phone.trim(),
+      fullName: user.fullName.trim(),
+      email: user.email.trim(),
+      phone: form.phone.trim() || user.phoneNumber || "",
       travelers: Number(form.travelers),
       departureMonth: form.departureMonth,
       notes: form.notes.trim() || undefined
@@ -76,8 +90,6 @@ export default function DynamicQRPayment({ tripId, tripName, tripPrice }: Dynami
 
     const fieldErrors = parsed.error.flatten().fieldErrors;
     setErrors({
-      fullName: fieldErrors.fullName?.[0],
-      email: fieldErrors.email?.[0],
       phone: fieldErrors.phone?.[0],
       travelers: fieldErrors.travelers?.[0],
       departureMonth: fieldErrors.departureMonth?.[0],
@@ -91,6 +103,11 @@ export default function DynamicQRPayment({ tripId, tripName, tripPrice }: Dynami
     event.preventDefault();
     setServerMessage("");
 
+    if (!token) {
+      router.push(`/login?next=${encodeURIComponent(nextPath)}`);
+      return;
+    }
+
     const payload = validateBookingDetails();
     if (!payload) {
       return;
@@ -101,12 +118,20 @@ export default function DynamicQRPayment({ tripId, tripName, tripPrice }: Dynami
       const response = await fetch("/api/bookings", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify(payload)
       });
 
       const result = (await response.json()) as StartPaymentResponse;
+
+      if (response.status === 401) {
+        logout();
+        router.push(`/login?next=${encodeURIComponent(nextPath)}`);
+        return;
+      }
+
       if (!response.ok || !result.success || !result.bookingId) {
         throw new Error(result.error ?? "Unable to initiate payment.");
       }
@@ -118,12 +143,62 @@ export default function DynamicQRPayment({ tripId, tripName, tripPrice }: Dynami
     }
   };
 
+  if (!isReady) {
+    return (
+      <div className="glass-panel space-y-4 rounded-2xl p-4 md:p-5">
+        <p className="text-sm text-brand-fog/80">Checking your login session...</p>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated || !user || !token) {
+    return (
+      <div className="glass-panel space-y-5 rounded-2xl p-4 md:p-5">
+        <div>
+          <h3 className="font-display text-2xl text-white">Login Required</h3>
+          <p className="mt-1 text-sm text-brand-fog/80">
+            Booking is compulsory only after user login. Sign in with Google or use your email and
+            password account.
+          </p>
+        </div>
+
+        <div className="rounded-xl border border-white/10 bg-black/20 p-3">
+          <p className="text-sm text-brand-fog/75">{tripName}</p>
+          <p className="font-display text-2xl text-brand-mint">INR {tripPrice.toLocaleString()}</p>
+        </div>
+
+        <div className="space-y-2 rounded-2xl border border-dashed border-white/15 bg-white/5 p-4">
+          <p className="text-sm text-white">You cannot continue to payment until you are logged in.</p>
+          <p className="text-xs text-brand-fog/75">
+            Your account can be created with name, email, phone number, password, and confirm
+            password, or you can use Google authentication.
+          </p>
+        </div>
+
+        <div className="grid gap-2 sm:grid-cols-2">
+          <Link
+            href={`/login?next=${encodeURIComponent(nextPath)}`}
+            className="rounded-xl border border-white/15 bg-white/5 px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-white/10"
+          >
+            Login First
+          </Link>
+          <Link
+            href={`/login?mode=signup&next=${encodeURIComponent(nextPath)}`}
+            className="rounded-xl bg-brand-amber px-4 py-3 text-center text-sm font-semibold text-brand-ink transition hover:brightness-110"
+          >
+            Create Account
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="glass-panel space-y-5 rounded-2xl p-4 md:p-5">
       <div>
         <h3 className="font-display text-2xl text-white">Reserve This Trip</h3>
         <p className="mt-1 text-sm text-brand-fog/80">
-          Step 1: Fill details and proceed to payment page for QR, confirmation, and PDF receipt.
+          Logged-in users can continue to payment. Your account details are used for the booking.
         </p>
       </div>
 
@@ -132,33 +207,20 @@ export default function DynamicQRPayment({ tripId, tripName, tripPrice }: Dynami
         <p className="font-display text-2xl text-brand-mint">INR {totalAmount.toLocaleString()}</p>
       </div>
 
+      <div className="rounded-2xl border border-emerald-300/20 bg-emerald-400/10 p-4 text-sm text-white">
+        <p className="font-semibold text-emerald-100">{user.fullName}</p>
+        <p className="mt-1 text-brand-fog/80">{user.email}</p>
+        <p className="mt-2 text-xs uppercase tracking-[0.22em] text-emerald-200/80">
+          {user.provider === "GOOGLE" ? "Google verified user" : "Email account user"}
+        </p>
+      </div>
+
       <form onSubmit={proceedToPayment} className="space-y-3">
-        <div>
-          <input
-            value={form.fullName}
-            onChange={(event) => updateField("fullName", event.target.value)}
-            placeholder="Full Name"
-            className="w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-white outline-none focus:border-brand-mint"
-          />
-          {errors.fullName ? <p className="mt-1 text-xs text-rose-300">{errors.fullName}</p> : null}
-        </div>
-
-        <div>
-          <input
-            value={form.email}
-            onChange={(event) => updateField("email", event.target.value)}
-            type="email"
-            placeholder="Email"
-            className="w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-white outline-none focus:border-brand-mint"
-          />
-          {errors.email ? <p className="mt-1 text-xs text-rose-300">{errors.email}</p> : null}
-        </div>
-
         <div>
           <input
             value={form.phone}
             onChange={(event) => updateField("phone", event.target.value)}
-            placeholder="Phone"
+            placeholder="Phone number for this booking"
             className="w-full rounded-lg border border-white/15 bg-white/5 px-3 py-2.5 text-sm text-white outline-none focus:border-brand-mint"
           />
           {errors.phone ? <p className="mt-1 text-xs text-rose-300">{errors.phone}</p> : null}
