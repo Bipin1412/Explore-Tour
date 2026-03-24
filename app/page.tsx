@@ -10,7 +10,6 @@ import TripCard from "@/components/home/TripCard";
 import TripSidebar from "@/components/home/TripSidebar";
 import TripTopBar from "@/components/home/TripTopBar";
 import SocialProof from "@/components/social/SocialProof";
-import { featuredTrips, trips } from "@/lib/data/trips";
 import { Trip, TripCategory } from "@/types/trip";
 
 const months = [
@@ -55,6 +54,12 @@ interface TripListResponse {
   success: boolean;
   total: number;
   trips: Trip[];
+  meta?: {
+    allTrips: Trip[];
+    featuredTrips: Trip[];
+    destinations: string[];
+    categories: TripCategory[];
+  };
   error?: string;
 }
 
@@ -100,22 +105,24 @@ function buildTripQuery(filters: HeroFilters, sidebarCategory: string) {
 export default function HomePage() {
   const [activeSidebar, setActiveSidebar] = useState("All Indian Trips");
   const [heroFilters, setHeroFilters] = useState<HeroFilters>(defaultHeroFilters);
-  const [listedTrips, setListedTrips] = useState<Trip[]>(trips);
-  const [totalTrips, setTotalTrips] = useState<number>(trips.length);
+  const [allTrips, setAllTrips] = useState<Trip[]>([]);
+  const [featuredTrips, setFeaturedTrips] = useState<Trip[]>([]);
+  const [listedTrips, setListedTrips] = useState<Trip[]>([]);
+  const [totalTrips, setTotalTrips] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(false);
   const [loadError, setLoadError] = useState<string>("");
 
   const destinations = useMemo(
-    () => ["All Destinations", ...Array.from(new Set(trips.map((trip) => trip.destination)))],
-    []
+    () => ["All Destinations", ...Array.from(new Set(allTrips.map((trip) => trip.destination)))],
+    [allTrips]
   );
 
   const categories = useMemo(
     () =>
-      ["All Trips", ...Array.from(new Set(trips.map((trip) => trip.category)))] as Array<
+      ["All Trips", ...Array.from(new Set(allTrips.map((trip) => trip.category)))] as Array<
         TripCategory | "All Trips"
       >,
-    []
+    [allTrips]
   );
 
   const fetchTrips = useCallback(async (filters: HeroFilters, sidebarCategory: string) => {
@@ -136,6 +143,10 @@ export default function HomePage() {
 
       setListedTrips(data.trips);
       setTotalTrips(data.total);
+      if (data.meta) {
+        setAllTrips(data.meta.allTrips);
+        setFeaturedTrips(data.meta.featuredTrips);
+      }
     } catch (error) {
       setListedTrips([]);
       setTotalTrips(0);
@@ -162,7 +173,7 @@ export default function HomePage() {
     void fetchTrips(heroFilters, item);
   };
 
-  const destinationCards = trips.slice(0, 5);
+  const destinationCards = allTrips.slice(0, 5);
 
   return (
     <main className="min-h-screen bg-transparent text-[#2f2418]">
@@ -200,7 +211,7 @@ export default function HomePage() {
               <div className="mb-4 flex items-center justify-between">
                 <h2 className="font-display text-2xl text-[#2f2418]">Detailed Trip Pages</h2>
                 <Link href="/trips" className="text-sm font-semibold text-[#7b5a3b] hover:underline">
-                  View all 4 pages
+                  View featured pages
                 </Link>
               </div>
               <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">

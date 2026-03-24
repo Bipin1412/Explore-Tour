@@ -9,6 +9,22 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "cdn.pixabay.com"
+      },
+      {
+        protocol: "https",
+        hostname: "encrypted-tbn0.gstatic.com"
+      },
+      {
+        protocol: "https",
+        hostname: "realhimachal.in"
+      },
+      {
+        protocol: "https",
+        hostname: "i.ytimg.com"
+      },
+      {
+        protocol: "https",
+        hostname: "storage.googleapis.com"
       }
     ]
   }

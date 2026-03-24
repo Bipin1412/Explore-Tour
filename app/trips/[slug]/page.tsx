@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import TripDetailsTemplate from "@/components/trips/TripDetailsTemplate";
-import { featuredTripSlugs, tripBySlug } from "@/lib/data/trips";
+import { getFeaturedTrips, getTripBySlug } from "@/lib/trip-store";
 
 interface FeaturedTripPageProps {
   params: {
@@ -9,13 +9,11 @@ interface FeaturedTripPageProps {
   };
 }
 
-export function generateStaticParams() {
-  return featuredTripSlugs.map((slug) => ({ slug }));
-}
+export const dynamic = "force-dynamic";
 
-export function generateMetadata({ params }: FeaturedTripPageProps): Metadata {
-  const trip = tripBySlug.get(params.slug);
-  if (!trip || !featuredTripSlugs.includes(params.slug as (typeof featuredTripSlugs)[number])) {
+export async function generateMetadata({ params }: FeaturedTripPageProps): Promise<Metadata> {
+  const trip = await getTripBySlug(params.slug);
+  if (!trip || !trip.featured) {
     return {
       title: "Trip Not Found | Explorers Group"
     };
@@ -27,14 +25,14 @@ export function generateMetadata({ params }: FeaturedTripPageProps): Metadata {
   };
 }
 
-export default function FeaturedTripPage({ params }: FeaturedTripPageProps) {
-  const isFeatured = featuredTripSlugs.includes(params.slug as (typeof featuredTripSlugs)[number]);
-  if (!isFeatured) {
-    notFound();
-  }
+export async function generateStaticParams() {
+  const featuredTrips = await getFeaturedTrips();
+  return featuredTrips.map((trip) => ({ slug: trip.slug }));
+}
 
-  const trip = tripBySlug.get(params.slug);
-  if (!trip) {
+export default async function FeaturedTripPage({ params }: FeaturedTripPageProps) {
+  const trip = await getTripBySlug(params.slug);
+  if (!trip || !trip.featured) {
     notFound();
   }
 
