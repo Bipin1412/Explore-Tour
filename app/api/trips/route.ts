@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { trips } from "@/lib/data/trips";
+import { getAllTrips, getFeaturedTrips } from "@/lib/trip-store";
 
 const ALL_VALUES = new Set(["all", "all trips", "all destinations", "any", "any month", "any duration"]);
 
@@ -31,6 +31,8 @@ function durationMatches(durationDays: number, selectedDuration: string | null):
 }
 
 export async function GET(request: NextRequest) {
+  const trips = await getAllTrips();
+  const featuredTrips = await getFeaturedTrips();
   const searchParams = request.nextUrl.searchParams;
   const category = searchParams.get("category");
   const sidebarCategory = searchParams.get("sidebarCategory");
@@ -77,6 +79,12 @@ export async function GET(request: NextRequest) {
     total: filtered.length,
     page,
     limit,
-    trips: paginated
+    trips: paginated,
+    meta: {
+      allTrips: trips,
+      featuredTrips,
+      destinations: Array.from(new Set(trips.map((trip) => trip.destination))),
+      categories: Array.from(new Set(trips.map((trip) => trip.category)))
+    }
   });
 }

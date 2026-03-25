@@ -1,13 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
-import { featuredTrips } from "@/lib/data/trips";
+import { getFeaturedTrips } from "@/lib/trip-store";
 
 export const metadata = {
   title: "Featured Trip Pages | Explorers Group",
-  description: "Explore detailed pages for our 4 flagship Indian trips."
+  description: "Explore detailed pages for featured Indian trips."
 };
 
-export default function FeaturedTripsIndexPage() {
+export const dynamic = "force-dynamic";
+
+export default async function FeaturedTripsIndexPage() {
+  const featuredTrips = await getFeaturedTrips();
+
   return (
     <main className="mx-auto min-h-screen w-full max-w-7xl px-5 pb-16 pt-10 sm:px-8">
       <section className="rounded-2xl border border-[#dbcab2] bg-[#fffaf1]/95 p-6 shadow-sm">

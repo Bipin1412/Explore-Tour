@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import TripDetailsTemplate from "@/components/trips/TripDetailsTemplate";
-import { tripBySlug, trips } from "@/lib/data/trips";
+import { getAllTrips, getTripBySlug } from "@/lib/trip-store";
 
 interface TourPageProps {
   params: {
@@ -9,12 +9,10 @@ interface TourPageProps {
   };
 }
 
-export function generateStaticParams() {
-  return trips.map((trip) => ({ slug: trip.slug }));
-}
+export const dynamic = "force-dynamic";
 
-export function generateMetadata({ params }: TourPageProps): Metadata {
-  const trip = tripBySlug.get(params.slug);
+export async function generateMetadata({ params }: TourPageProps): Promise<Metadata> {
+  const trip = await getTripBySlug(params.slug);
   if (!trip) {
     return {
       title: "Tour Not Found | Explorers Group"
@@ -27,8 +25,13 @@ export function generateMetadata({ params }: TourPageProps): Metadata {
   };
 }
 
-export default function TourDetailPage({ params }: TourPageProps) {
-  const trip = tripBySlug.get(params.slug);
+export async function generateStaticParams() {
+  const trips = await getAllTrips();
+  return trips.map((trip) => ({ slug: trip.slug }));
+}
+
+export default async function TourDetailPage({ params }: TourPageProps) {
+  const trip = await getTripBySlug(params.slug);
   if (!trip) {
     notFound();
   }
