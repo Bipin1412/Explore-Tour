@@ -1,6 +1,8 @@
 node_modules/
 .next/
 out/
+.m2/
+.tmp/
 
 .env
 .env.local
@@ -24,3 +26,5 @@ prisma/*.db-journal
 .DS_Store
 Thumbs.db
 backend/target/
+tools/apache-maven-3.9.14/
+tools/apache-maven-3.9.14-bin.zip

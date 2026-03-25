@@ -37,7 +37,7 @@ export default function TripCard({ trip }: TripCardProps) {
         transformStyle: "preserve-3d",
         transform: `perspective(1000px) rotateX(${tilt.rotateX}deg) rotateY(${tilt.rotateY}deg)`
       }}
-      className="group relative overflow-hidden rounded-2xl border border-[#dbc9b1] bg-[#fffaf2] shadow-sm transition duration-300 hover:shadow-xl"
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-[#dbc9b1] bg-[#fffaf2] shadow-sm transition duration-300 hover:shadow-xl"
     >
       <div className="relative h-56 overflow-hidden">
         <Image
@@ -52,7 +52,7 @@ export default function TripCard({ trip }: TripCardProps) {
         </div>
       </div>
 
-      <div className="space-y-3 p-4">
+      <div className="flex flex-1 flex-col gap-3 p-4">
         <div className="flex items-center justify-between gap-2">
           <span
             className={`rounded-full border px-2.5 py-1 text-xs font-semibold ${difficultyClassMap[trip.difficulty]}`}
@@ -62,20 +62,24 @@ export default function TripCard({ trip }: TripCardProps) {
           <span className="text-sm text-[#6f5a44]">{trip.durationDays} Days</span>
         </div>
 
-        <h3 className="font-display text-xl text-[#2f251a]">{trip.name}</h3>
-        <p className="line-clamp-2 text-sm text-[#6f5a44]">{trip.summary}</p>
+        <h3 className="min-h-[3.75rem] font-display text-xl leading-tight text-[#2f251a]">
+          {trip.name}
+        </h3>
+        <p className="min-h-[3rem] line-clamp-2 text-sm text-[#6f5a44]">{trip.summary}</p>
 
-        <div className="flex items-end justify-between pt-1">
-          <p className="text-[#8b765d]">Starting from</p>
-          <p className="font-display text-2xl text-[#7b5a3b]">INR {trip.price.toLocaleString()}</p>
+        <div className="mt-auto space-y-4 pt-1">
+          <div className="flex items-end justify-between gap-3">
+            <p className="text-[#8b765d]">Starting from</p>
+            <p className="text-right font-display text-2xl text-[#7b5a3b]">INR {trip.price.toLocaleString()}</p>
+          </div>
+
+          <Link
+            href={`/tours/${trip.slug}`}
+            className="inline-flex w-fit rounded-lg bg-[#7b5a3b] px-3 py-2 text-sm font-semibold text-white transition hover:bg-[#66492e]"
+          >
+            View Trip
+          </Link>
         </div>
-
-        <Link
-          href={`/tours/${trip.slug}`}
-          className="inline-flex rounded-lg bg-[#7b5a3b] px-3 py-2 text-sm font-semibold text-white transition hover:bg-[#66492e]"
-        >
-          View Trip
-        </Link>
       </div>
     </motion.article>
   );

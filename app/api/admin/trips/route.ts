@@ -1,5 +1,7 @@
 import { randomUUID } from "crypto";
 import { NextRequest, NextResponse } from "next/server";
+import { isAdminUser, getAdminAccessErrorMessage } from "@/lib/auth/admin";
+import { authenticateRequest } from "@/lib/auth/server-auth";
 import { createAdminTrip, deleteTripBySlug, getAllTrips, updateTripBySlug } from "@/lib/trip-store";
 import { Trip, TripCategory, TripDifficulty, TripRegion } from "@/types/trip";
 
@@ -152,7 +154,38 @@ function normalizeTrip(payload: unknown): Trip {
   };
 }
 
-export async function GET() {
+async function requireAdmin(request: NextRequest) {
+  const session = await authenticateRequest(request);
+
+  if (!session) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Authentication is required."
+      },
+      { status: 401 }
+    );
+  }
+
+  if (!isAdminUser(session.user)) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: getAdminAccessErrorMessage()
+      },
+      { status: 403 }
+    );
+  }
+
+  return null;
+}
+
+export async function GET(request: NextRequest) {
+  const authError = await requireAdmin(request);
+  if (authError) {
+    return authError;
+  }
+
   const trips = await getAllTrips();
 
   return NextResponse.json({
@@ -162,6 +195,11 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const authError = await requireAdmin(request);
+  if (authError) {
+    return authError;
+  }
+
   try {
     const payload = (await request.json()) as unknown;
     const trip = normalizeTrip(payload);
@@ -186,6 +224,11 @@ export async function POST(request: NextRequest) {
 }
 
 export async function PUT(request: NextRequest) {
+  const authError = await requireAdmin(request);
+  if (authError) {
+    return authError;
+  }
+
   try {
     const payload = (await request.json()) as unknown;
 
@@ -218,6 +261,11 @@ export async function PUT(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
+  const authError = await requireAdmin(request);
+  if (authError) {
+    return authError;
+  }
+
   try {
     const { searchParams } = new URL(request.url);
     const slug = searchParams.get("slug")?.trim();

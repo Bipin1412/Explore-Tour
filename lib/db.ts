@@ -42,9 +42,15 @@ if (process.env.NODE_ENV !== "production") {
   globalForMemory.bookingStore = bookingStore;
 }
 
-function canUsePrisma() {
+export function canUsePrisma() {
   const url = process.env.DATABASE_URL?.trim();
-  return Boolean(url && (url.startsWith("postgresql://") || url.startsWith("postgres://")));
+  return Boolean(
+    url &&
+      (url.startsWith("postgresql://") ||
+        url.startsWith("postgres://") ||
+        url.startsWith("mysql://") ||
+        url.startsWith("mysqls://"))
+  );
 }
 
 function toAppBooking(booking: PrismaBooking): AppBooking {

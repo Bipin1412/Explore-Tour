@@ -1,5 +1,6 @@
 package com.explorertours.backend.security;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
@@ -7,8 +8,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -19,15 +18,18 @@ public class SecurityConfig {
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
   private final OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler;
   private final OAuth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler;
+  private final String googleClientId;
 
   public SecurityConfig(
       JwtAuthenticationFilter jwtAuthenticationFilter,
       OAuth2AuthenticationSuccessHandler oauth2AuthenticationSuccessHandler,
-      OAuth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler
+      OAuth2AuthenticationFailureHandler oauth2AuthenticationFailureHandler,
+      @Value("${GOOGLE_CLIENT_ID:}") String googleClientId
   ) {
     this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     this.oauth2AuthenticationSuccessHandler = oauth2AuthenticationSuccessHandler;
     this.oauth2AuthenticationFailureHandler = oauth2AuthenticationFailureHandler;
+    this.googleClientId = googleClientId;
   }
 
   @Bean
@@ -48,17 +50,15 @@ public class SecurityConfig {
             .anyRequest()
             .authenticated()
         )
-        .oauth2Login(oauth2 -> oauth2
-            .successHandler(oauth2AuthenticationSuccessHandler)
-            .failureHandler(oauth2AuthenticationFailureHandler)
-        )
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-    return http.build();
-  }
+    if (googleClientId != null && !googleClientId.isBlank()) {
+      http.oauth2Login(oauth2 -> oauth2
+          .successHandler(oauth2AuthenticationSuccessHandler)
+          .failureHandler(oauth2AuthenticationFailureHandler)
+      );
+    }
 
-  @Bean
-  public PasswordEncoder passwordEncoder() {
-    return new BCryptPasswordEncoder();
+    return http.build();
   }
 }
