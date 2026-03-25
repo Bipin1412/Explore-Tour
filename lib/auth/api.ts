@@ -6,11 +6,7 @@ function trimTrailingSlash(value: string) {
   return value.replace(/\/+$/, "");
 }
 
-export function getAuthApiBaseUrl() {
-  return trimTrailingSlash(process.env.NEXT_PUBLIC_AUTH_API_BASE_URL ?? DEFAULT_AUTH_API_BASE_URL);
-}
-
-export function getServerAuthApiBaseUrl() {
+function getAuthBackendBaseUrl() {
   return trimTrailingSlash(
     process.env.AUTH_API_BASE_URL ??
       process.env.NEXT_PUBLIC_AUTH_API_BASE_URL ??
@@ -18,8 +14,21 @@ export function getServerAuthApiBaseUrl() {
   );
 }
 
+export function getAuthApiBaseUrl() {
+  const envUrl = process.env.NEXT_PUBLIC_AUTH_API_BASE_URL;
+  if (envUrl && envUrl.trim().length > 0) {
+    return trimTrailingSlash(envUrl);
+  }
+
+  return "";
+}
+
+export function getServerAuthApiBaseUrl() {
+  return getAuthBackendBaseUrl();
+}
+
 export function getGoogleAuthUrl() {
-  return `${getAuthApiBaseUrl()}/oauth2/authorization/google`;
+  return `${getAuthBackendBaseUrl()}/oauth2/authorization/google`;
 }
 
 export function extractBearerToken(authorizationHeader: string | null) {

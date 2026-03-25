@@ -23,6 +23,16 @@ async function readApiError(response: Response) {
   }
 }
 
+function formatAuthError(error: unknown, fallbackMessage: string) {
+  if (error instanceof TypeError && error.message === "Failed to fetch") {
+    return process.env.NODE_ENV === "development"
+      ? "Unable to reach the authentication service. Start the backend or set NEXT_PUBLIC_AUTH_API_BASE_URL."
+      : "Unable to reach the authentication service.";
+  }
+
+  return error instanceof Error ? error.message : fallbackMessage;
+}
+
 export default function AuthScreen() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -83,7 +93,7 @@ export default function AuthScreen() {
       setSession(auth);
       router.replace(nextPath);
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Unable to login.");
+      setMessage(formatAuthError(error, "Unable to login."));
     } finally {
       setIsSubmitting(false);
     }
@@ -117,7 +127,7 @@ export default function AuthScreen() {
       setSession(auth);
       router.replace(nextPath);
     } catch (error) {
-      setMessage(error instanceof Error ? error.message : "Unable to create account.");
+      setMessage(formatAuthError(error, "Unable to create account."));
     } finally {
       setIsSubmitting(false);
     }
