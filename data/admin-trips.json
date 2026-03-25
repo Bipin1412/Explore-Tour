@@ -42,5 +42,50 @@
       }
     ],
     "featured": false
+  },
+  {
+    "id": "trip-06ccb8c7-5721-47a0-9fae-2950c32eac2d",
+    "slug": "goa",
+    "name": "Goa",
+    "summary": "goa wale beach pe",
+    "region": "Coastal",
+    "category": "Coastal Escapes",
+    "destination": "cabo de rama",
+    "durationDays": 5,
+    "difficulty": "Easy",
+    "bestMonths": [
+      "April",
+      "November"
+    ],
+    "price": 14998,
+    "heroVideo": "https://s7ap1.scene7.com/is/image/incredibleindia/1-palolem-beach-goa-goa-city-hero?qlt=82&ts=1742182084999",
+    "heroImage": "https://assets.serenity.co.uk/58000-58999/58779/720x480.jpg",
+    "gallery": [
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSd9c2cBd1in5XYawTYJNi1O0jos7NlYSnZuQ&s"
+    ],
+    "highlights": [
+      "awesome beach"
+    ],
+    "itinerary": [
+      {
+        "day": 1,
+        "title": "travel + hotel",
+        "description": "pune - goa"
+      }
+    ],
+    "overview": "aaj blue hai pani pani",
+    "inclusions": [
+      "lets go"
+    ],
+    "exclusions": [
+      "lets go"
+    ],
+    "faqs": [
+      {
+        "question": "what is the color of the ocean",
+        "answer": "blue"
+      }
+    ],
+    "featured": false
   }
 ]

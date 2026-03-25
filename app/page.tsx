@@ -359,6 +359,7 @@ export default function HomePage() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true, amount: 0.2 }}
                       transition={{ delay: index * 0.03, duration: 0.35, ease: "easeOut" }}
+                      className="h-full"
                     >
                       <TripCard trip={trip} />
                     </motion.div>

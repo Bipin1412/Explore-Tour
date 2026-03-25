@@ -13,7 +13,7 @@ type MockUser = {
   phoneNumber: string;
   password: string;
   provider: "LOCAL";
-  role: "USER";
+  role: "USER" | "ADMIN";
 };
 
 type MockStore = {
@@ -29,9 +29,19 @@ declare global {
 
 function getMockStore(): MockStore {
   if (!globalThis.__explorerToursMockAuth) {
+    const adminUser: MockUser = {
+      id: "mock-admin-user",
+      fullName: "Test Admin",
+      email: "admin@explorertours.local",
+      phoneNumber: "9999999999",
+      password: "Admin@12345",
+      provider: "LOCAL",
+      role: "ADMIN"
+    };
+
     globalThis.__explorerToursMockAuth = {
-      usersByEmail: new Map(),
-      usersByPhone: new Map(),
+      usersByEmail: new Map([[adminUser.email, adminUser]]),
+      usersByPhone: new Map([[adminUser.phoneNumber, adminUser]]),
       tokens: new Map()
     };
   }

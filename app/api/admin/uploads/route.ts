@@ -2,6 +2,8 @@ import { randomUUID } from "crypto";
 import { promises as fs } from "fs";
 import path from "path";
 import { NextResponse } from "next/server";
+import { isAdminUser, getAdminAccessErrorMessage } from "@/lib/auth/admin";
+import { authenticateRequest } from "@/lib/auth/server-auth";
 
 const uploadDirectory = path.join(process.cwd(), "public", "uploads");
 const allowedMimeTypes = new Set(["image/jpeg", "image/png", "image/webp", "image/gif"]);
@@ -15,6 +17,27 @@ function extensionForMimeType(mimeType: string) {
 }
 
 export async function POST(request: Request) {
+  const session = await authenticateRequest(request);
+  if (!session) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: "Authentication is required."
+      },
+      { status: 401 }
+    );
+  }
+
+  if (!isAdminUser(session.user)) {
+    return NextResponse.json(
+      {
+        success: false,
+        error: getAdminAccessErrorMessage()
+      },
+      { status: 403 }
+    );
+  }
+
   try {
     const formData = await request.formData();
     const file = formData.get("file");

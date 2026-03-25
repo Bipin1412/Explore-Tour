@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { useAuth } from "@/components/auth/AuthProvider";
 import { Trip, TripCategory, TripDifficulty, TripRegion } from "@/types/trip";
 
 type TripFormState = {
@@ -195,6 +197,8 @@ async function readApiResponse<T extends { error?: string }>(response: Response)
 }
 
 export default function AdminPage() {
+  const router = useRouter();
+  const { user, token, isReady, isAuthenticated, logout } = useAuth();
   const [form, setForm] = useState<TripFormState>(createEmptyForm);
   const [existingTrips, setExistingTrips] = useState<Trip[]>([]);
   const [editingTripSlug, setEditingTripSlug] = useState("");
@@ -212,11 +216,31 @@ export default function AdminPage() {
   const suggestedSlug = useMemo(() => slugify(form.name), [form.name]);
   const isEditing = Boolean(editingTripSlug);
 
+  const authorizedFetch = async (input: RequestInfo | URL, init?: RequestInit) => {
+    if (!token) {
+      throw new Error("Your session expired. Please login again.");
+    }
+
+    const headers = new Headers(init?.headers);
+    headers.set("Authorization", `Bearer ${token}`);
+
+    return fetch(input, {
+      ...init,
+      headers
+    });
+  };
+
   const loadTrips = async () => {
+    if (!token) {
+      setIsLoadingTrips(false);
+      return;
+    }
+
     setIsLoadingTrips(true);
+    setErrorMessage("");
 
     try {
-      const response = await fetch("/api/admin/trips", { cache: "no-store" });
+      const response = await authorizedFetch("/api/admin/trips", { cache: "no-store" });
       const data = await readApiResponse<AdminTripsResponse>(response);
 
       if (!response.ok || !data.success) {
@@ -232,8 +256,17 @@ export default function AdminPage() {
   };
 
   useEffect(() => {
+    if (!isReady) {
+      return;
+    }
+
+    if (!isAuthenticated) {
+      router.replace(`/login?next=${encodeURIComponent("/admin")}`);
+      return;
+    }
+
     void loadTrips();
-  }, []);
+  }, [isReady, isAuthenticated, token, router]);
 
   const updateItinerary = (index: number, field: "title" | "description", value: string) => {
     setForm((current) => ({
@@ -260,7 +293,7 @@ export default function AdminPage() {
     setCreatedTripFeatured(false);
 
     try {
-      const response = await fetch("/api/admin/trips", {
+      const response = await authorizedFetch("/api/admin/trips", {
         method: isEditing ? "PUT" : "POST",
         headers: {
           "Content-Type": "application/json"
@@ -322,7 +355,7 @@ export default function AdminPage() {
     setSuccessMessage("");
 
     try {
-      const response = await fetch(`/api/admin/trips?slug=${encodeURIComponent(slug)}`, {
+      const response = await authorizedFetch(`/api/admin/trips?slug=${encodeURIComponent(slug)}`, {
         method: "DELETE"
       });
       const data = await readApiResponse<DeleteTripResponse>(response);
@@ -349,7 +382,7 @@ export default function AdminPage() {
     const formData = new FormData();
     formData.append("file", file);
 
-    const response = await fetch("/api/admin/uploads", {
+    const response = await authorizedFetch("/api/admin/uploads", {
       method: "POST",
       body: formData
     });
@@ -398,6 +431,21 @@ export default function AdminPage() {
     }
   };
 
+  if (!isReady) {
+    return (
+      <main className="min-h-screen px-4 py-8 text-[#2f2418] sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-3xl rounded-[28px] border border-[#dbcab2] bg-[#fff8ef]/95 p-6 shadow-[0_24px_80px_rgba(88,60,22,0.12)]">
+          <h1 className="font-display text-3xl text-[#2f2418]">Admin Access</h1>
+          <p className="mt-3 text-[#6f5b44]">Checking your login session...</p>
+        </div>
+      </main>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null;
+  }
+
   return (
     <main className="min-h-screen px-4 py-8 text-[#2f2418] sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl space-y-6">
@@ -407,11 +455,14 @@ export default function AdminPage() {
               <p className="text-sm uppercase tracking-[0.28em] text-[#8f7659]">Explore - Tour Admin</p>
               <h1 className="mt-2 font-display text-3xl text-[#2f2418] sm:text-4xl">Create Detailed Trip Pages</h1>
               <p className="mt-3 max-w-3xl text-[#6f5b44]">
-                Fill the same content blocks used on the frontend trip pages. Saving here creates a new public trip
-                without requiring database setup yet.
+                Fill the same content blocks used on the frontend trip pages. Saving here updates the shared trip
+                database-backed admin store used by the public site.
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
+              <div className="rounded-full border border-[#dbcab2] bg-[#fffdf8] px-4 py-2 text-sm text-[#6b5034]">
+                Signed in as {user?.email ?? "Unknown user"}
+              </div>
               <Link
                 href="/"
                 className="rounded-full border border-[#cdb89b] px-4 py-2 text-sm font-semibold text-[#6b5034] transition hover:bg-[#f6ecde]"
@@ -424,6 +475,16 @@ export default function AdminPage() {
               >
                 Featured Pages
               </Link>
+              <button
+                type="button"
+                onClick={() => {
+                  logout();
+                  router.replace("/login?next=%2Fadmin");
+                }}
+                className="rounded-full border border-[#cdb89b] px-4 py-2 text-sm font-semibold text-[#6b5034] transition hover:bg-[#f6ecde]"
+              >
+                Logout
+              </button>
             </div>
           </div>
         </section>
@@ -921,8 +982,8 @@ export default function AdminPage() {
               <h2 className="font-display text-2xl text-[#2f2418]">How It Works</h2>
               <div className="mt-4 space-y-3 text-sm text-[#6f5b44]">
                 <p>Fill this form with the same content blocks used by the frontend detailed trip template.</p>
-                <p>Submitting stores the trip in a local JSON file until the database layer is ready.</p>
-                <p>Later we can swap the storage layer to Prisma or another database without redesigning this page.</p>
+                <p>Submitting now saves through protected admin APIs and persists to the configured Prisma database.</p>
+                <p>If a database is not configured locally, the store falls back safely so development can still continue.</p>
               </div>
             </section>
           </aside>

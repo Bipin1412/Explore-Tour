@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/explorer_tours?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=UTC}
-    username: ${MYSQL_USERNAME:root}
-    password: ${MYSQL_PASSWORD:password}
+    url: ${MYSQL_URL:${SPRING_DATASOURCE_URL:jdbc:h2:mem:explorer_tours;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE}}
+    username: ${MYSQL_USERNAME:${SPRING_DATASOURCE_USERNAME:sa}}
+    password: ${MYSQL_PASSWORD:${SPRING_DATASOURCE_PASSWORD:}}
   jpa:
     hibernate:
       ddl-auto: update
@@ -13,18 +13,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
-  security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: ${GOOGLE_CLIENT_ID:}
-            client-secret: ${GOOGLE_CLIENT_SECRET:}
-            scope:
-              - openid
-              - profile
-              - email
-
+  h2:
+    console:
+      enabled: true
 app:
   frontend-base-url: ${FRONTEND_BASE_URL:http://localhost:3000}
   jwt:
