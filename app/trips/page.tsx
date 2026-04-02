@@ -1,52 +1,65 @@
-import Image from "next/image";
-import Link from "next/link";
-import { getFeaturedTrips } from "@/lib/trip-store";
+import { getAllTrips } from "@/lib/trip-store";
+import TripListingBoard from "@/components/listing/TripListingBoard";
 
 export const metadata = {
-  title: "Featured Trip Pages | Explorers Group",
-  description: "Explore detailed pages for featured Indian trips."
+  title: "Upcoming Trek Listings | Explorers Group",
+  description: "Browse the upcoming trek and tour listing board with schedule windows, difficulty, and pricing."
 };
 
 export const dynamic = "force-dynamic";
 
-export default async function FeaturedTripsIndexPage() {
-  const featuredTrips = await getFeaturedTrips();
+interface FeaturedTripsIndexPageProps {
+  searchParams?: {
+    category?: string | string[];
+    season?: string | string[];
+    region?: string | string[];
+    difficulty?: string | string[];
+    month?: string | string[];
+    q?: string | string[];
+  };
+}
+
+function getSingleValue(value?: string | string[]) {
+  return Array.isArray(value) ? value[0] : value;
+}
+
+export default async function FeaturedTripsIndexPage({ searchParams }: FeaturedTripsIndexPageProps) {
+  const trips = await getAllTrips();
+  const initialFilters = {
+    category: getSingleValue(searchParams?.category),
+    season: getSingleValue(searchParams?.season),
+    region: getSingleValue(searchParams?.region),
+    difficulty: getSingleValue(searchParams?.difficulty),
+    month: getSingleValue(searchParams?.month),
+    q: getSingleValue(searchParams?.q)
+  };
 
   return (
-    <main className="mx-auto min-h-screen w-full max-w-7xl px-5 pb-16 pt-10 sm:px-8">
-      <section className="rounded-2xl border border-[#dbcab2] bg-[#fffaf1]/95 p-6 shadow-sm">
-        <p className="text-sm uppercase tracking-[0.2em] text-[#8f7659]">Explorers Group</p>
-        <h1 className="mt-3 font-display text-4xl text-[#2f2418]">Featured Trip Pages</h1>
-        <p className="mt-2 max-w-3xl text-[#6f5b44]">
-          Detailed itinerary and booking pages for four flagship trips.
-        </p>
+    <main className="pb-16">
+      <section className="section-shell">
+        <div className="rounded-[2.3rem] border border-[#d9cfbf] bg-[#f7efe4] p-6 shadow-[0_24px_70px_rgba(30,36,27,0.08)] sm:p-8">
+          <p className="section-tag">Trek and Tour Listing</p>
+          <h1 className="mt-4 font-display text-5xl text-[#112315] sm:text-6xl">
+            Upcoming trek windows and signature departures.
+          </h1>
+          <p className="mt-4 max-w-3xl text-sm leading-8 text-[#555b4f] sm:text-base">
+            This listing page now reads like an event board: schedule windows, difficulty, duration, and cost per head, with each trek name opening the detailed destination page.
+          </p>
+          <div className="mt-6 grid gap-4 sm:grid-cols-3">
+            <div className="rounded-[1.5rem] border border-[#ddd3c4] bg-white/70 p-4 text-sm font-semibold text-[#1b2b1b]">
+              {trips.length} live programs across treks, expeditions, and tours
+            </div>
+            <div className="rounded-[1.5rem] border border-[#ddd3c4] bg-white/70 p-4 text-sm font-semibold text-[#1b2b1b]">
+              Batch windows shown from current destination seasonality
+            </div>
+            <div className="rounded-[1.5rem] border border-[#ddd3c4] bg-white/70 p-4 text-sm font-semibold text-[#1b2b1b]">
+              Click any trek name to open the full detail and booking page
+            </div>
+          </div>
+        </div>
       </section>
 
-      <section className="mt-6 grid gap-4 sm:grid-cols-2">
-        {featuredTrips.map((trip) => (
-          <Link
-            key={trip.slug}
-            href={`/trips/${trip.slug}`}
-            className="group overflow-hidden rounded-2xl border border-[#dbcab2] bg-[#fffaf2] shadow-sm transition hover:-translate-y-0.5 hover:shadow-lg"
-          >
-            <div className="relative h-56">
-              <Image
-                src={trip.heroImage}
-                alt={trip.name}
-                fill
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover transition duration-500 group-hover:scale-105"
-              />
-            </div>
-            <div className="space-y-2 p-4">
-              <p className="text-xs uppercase tracking-[0.12em] text-[#8f7659]">{trip.region}</p>
-              <h2 className="font-display text-2xl text-[#2f2418]">{trip.name}</h2>
-              <p className="line-clamp-2 text-sm text-[#6f5b44]">{trip.summary}</p>
-              <p className="font-semibold text-[#7b5a3b]">Open full page</p>
-            </div>
-          </Link>
-        ))}
-      </section>
+      <TripListingBoard trips={trips} initialFilters={initialFilters} />
     </main>
   );
 }

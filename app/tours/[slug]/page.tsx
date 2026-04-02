@@ -36,5 +36,11 @@ export default async function TourDetailPage({ params }: TourPageProps) {
     notFound();
   }
 
-  return <TripDetailsTemplate trip={trip} />;
+  const allTrips = await getAllTrips();
+  const relatedTrips = allTrips
+    .filter((candidate) => candidate.slug !== trip.slug)
+    .filter((candidate) => candidate.category === trip.category || candidate.region === trip.region)
+    .slice(0, 3);
+
+  return <TripDetailsTemplate trip={trip} relatedTrips={relatedTrips} />;
 }

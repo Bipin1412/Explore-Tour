@@ -35,8 +35,14 @@ export async function sendBookingEmail(booking: BookingInput): Promise<void> {
     <p><strong>Name:</strong> ${booking.fullName}</p>
     <p><strong>Email:</strong> ${booking.email}</p>
     <p><strong>Phone:</strong> ${booking.phone}</p>
+    <p><strong>WhatsApp:</strong> ${booking.whatsappNumber}</p>
+    <p><strong>Event Date:</strong> ${booking.eventDate}</p>
+    <p><strong>Gender:</strong> ${booking.gender}</p>
+    <p><strong>Blood Group:</strong> ${booking.bloodGroup}</p>
+    <p><strong>Age:</strong> ${booking.age}</p>
     <p><strong>Travelers:</strong> ${booking.travelers}</p>
     <p><strong>Departure Month:</strong> ${booking.departureMonth}</p>
+    <p><strong>Payment ID:</strong> ${booking.paymentId}</p>
     <p><strong>Notes:</strong> ${booking.notes ?? "N/A"}</p>
   `;
 

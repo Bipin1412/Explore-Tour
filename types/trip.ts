@@ -44,8 +44,14 @@ export interface Trip {
   highlights: string[];
   itinerary: ItineraryDay[];
   overview?: string;
+  aboutDestination?: string;
   inclusions?: string[];
   exclusions?: string[];
+  whatToBring?: string[];
+  cancellationPolicy?: string[];
+  rulesAndRegulations?: string[];
+  photoCaptions?: string[];
+  mapEmbedUrl?: string;
   faqs?: TripFaq[];
   featured?: boolean;
 }

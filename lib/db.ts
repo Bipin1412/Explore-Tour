@@ -2,6 +2,23 @@ import { Booking as PrismaBooking, PaymentStatus, Prisma, PrismaClient } from "@
 import { BookingInput } from "@/lib/validators/booking";
 import { generateReceiptNumber } from "@/lib/payment";
 
+function buildStoredNotes(payload: BookingInput) {
+  const detailLines = [
+    `Event Date: ${payload.eventDate}`,
+    `Gender: ${payload.gender}`,
+    `Blood Group: ${payload.bloodGroup}`,
+    `Age: ${payload.age}`,
+    `WhatsApp: ${payload.whatsappNumber}`,
+    `Payment ID: ${payload.paymentId}`
+  ];
+
+  if (payload.notes?.trim()) {
+    detailLines.push(`Additional Note: ${payload.notes.trim()}`);
+  }
+
+  return detailLines.join("\n");
+}
+
 export type AppPaymentStatus = "PENDING" | "CONFIRMED";
 
 export interface AppBooking {
@@ -65,12 +82,21 @@ export async function createPendingBooking(
   payload: BookingInput,
   paymentRef: string
 ): Promise<AppBooking> {
+  const storedNotes = buildStoredNotes(payload);
+
   if (canUsePrisma()) {
     try {
       const created = await prisma.booking.create({
         data: {
-          ...payload,
+          tripId: payload.tripId,
+          tripName: payload.tripName,
           tripPrice: new Prisma.Decimal(payload.tripPrice),
+          fullName: payload.fullName,
+          email: payload.email,
+          phone: payload.phone,
+          travelers: payload.travelers,
+          departureMonth: payload.departureMonth,
+          notes: storedNotes,
           paymentStatus: PaymentStatus.PENDING,
           paymentRef
         }
@@ -93,7 +119,7 @@ export async function createPendingBooking(
     phone: payload.phone,
     travelers: payload.travelers,
     departureMonth: payload.departureMonth,
-    notes: payload.notes ?? null,
+    notes: storedNotes,
     paymentStatus: "PENDING",
     paymentRef,
     paymentUtr: null,

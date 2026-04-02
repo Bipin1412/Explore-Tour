@@ -1,23 +1,23 @@
 import type { Metadata } from "next";
-import { Manrope, Sora } from "next/font/google";
+import { DM_Sans, Playfair_Display } from "next/font/google";
 import AuthProvider from "@/components/auth/AuthProvider";
-import AnimatedNatureBackground from "@/components/common/AnimatedNatureBackground";
+import SiteShell from "@/components/site/SiteShell";
 import "./globals.css";
 
-const sora = Sora({
+const playfair = Playfair_Display({
   subsets: ["latin"],
-  variable: "--font-sora"
+  variable: "--font-display"
 });
 
-const manrope = Manrope({
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  variable: "--font-manrope"
+  variable: "--font-body"
 });
 
 export const metadata: Metadata = {
-  title: "Explorers Group | Indian Treks and Adventure Trips",
+  title: "Explorers Group | Bold Outdoor Adventures and Signature Treks",
   description:
-    "Trip-first booking platform for Indian Himalayan treks, Sahyadri expeditions, forest trails, and curated adventure departures."
+    "Editorial-style outdoor website for treks, camps, safaris, tours, and community-led adventure programs from Explorers Group."
 };
 
 export default function RootLayout({
@@ -27,10 +27,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${sora.variable} ${manrope.variable} relative font-body antialiased`}>
+      <body className={`${playfair.variable} ${dmSans.variable} relative font-body antialiased`}>
         <AuthProvider>
-          <AnimatedNatureBackground />
-          <div className="relative z-10">{children}</div>
+          <SiteShell>{children}</SiteShell>
         </AuthProvider>
       </body>
     </html>

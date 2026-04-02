@@ -1,387 +1,265 @@
-"use client";
-
-import { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import ExplorersAIBot from "@/components/ai/ExplorersAIBot";
-import HeroSection, { HeroFilters } from "@/components/home/HeroSection";
-import TripCard from "@/components/home/TripCard";
-import TripSidebar from "@/components/home/TripSidebar";
-import TripTopBar from "@/components/home/TripTopBar";
-import SocialProof from "@/components/social/SocialProof";
-import { Trip, TripCategory } from "@/types/trip";
+import AtlasSection from "@/components/sections/AtlasSection";
+import FeaturedProgramsGrid from "@/components/sections/FeaturedProgramsGrid";
+import HeroPanorama from "@/components/sections/HeroPanorama";
+import QuickLinksSection from "@/components/sections/QuickLinksSection";
+import SocialEmbeds from "@/components/sections/SocialEmbeds";
+import StatsBar from "@/components/sections/StatsBar";
+import TestimonialsTabs from "@/components/sections/TestimonialsTabs";
+import WhyExplorers from "@/components/sections/WhyExplorers";
+import { footerQuickLinks, primaryAccessLinks } from "@/data/navigation";
+import { getBatchWindow } from "@/lib/program-content";
+import { featuredTrips, trips } from "@/lib/data/trips";
 
-const months = [
-  "Any Month",
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December"
+const heroSlides = featuredTrips.slice(0, 4).map((trip) => ({
+  image: trip.heroImage,
+  caption: `${trip.name} | ${trip.destination}`
+}));
+
+const fallbackHeroSlide = trips[0]
+  ? {
+      image: trips[0].heroImage,
+      caption: `${trips[0].name} | ${trips[0].destination}`
+    }
+  : null;
+
+const allHeroSlides =
+  heroSlides.length === 4 && fallbackHeroSlide ? [...heroSlides, fallbackHeroSlide] : heroSlides;
+
+const featuredPrograms = [
+  {
+    title: "Weekend Treks",
+    subtitle: "Summer / Monsoon / Winter",
+    image: trips[1]?.heroImage ?? trips[0].heroImage,
+    caption: "Weekend ridge trails",
+    href: "/trips?category=Weekend%20Treks"
+  },
+  {
+    title: "Camping",
+    subtitle: "Lake, beach, and forest nights",
+    image: trips[7]?.heroImage ?? trips[0].heroImage,
+    caption: "Campfire by the water",
+    href: "/camping"
+  },
+  {
+    title: "Jungle Safari",
+    subtitle: "Wildlife circuits and naturalists",
+    image: trips[8]?.heroImage ?? trips[0].heroImage,
+    caption: "Wildlife dawn drives",
+    href: "/jungle-safari"
+  },
+  {
+    title: "Himalayan Explorers",
+    subtitle: "Flagship mountain departures",
+    image: trips[3]?.heroImage ?? trips[0].heroImage,
+    caption: "High-altitude mornings",
+    href: "/himalayan-treks"
+  },
+  {
+    title: "Junior Explorers",
+    subtitle: "8 to 14 years",
+    image: trips[0]?.heroImage,
+    caption: "Young explorers in the wild",
+    href: "/programs/junior-explorers"
+  },
+  {
+    title: "Lady Explorers",
+    subtitle: "Women special departures",
+    image: trips[2]?.heroImage ?? trips[0].heroImage,
+    caption: "Women-led outdoor energy",
+    href: "/programs/lady-explorers"
+  },
+  {
+    title: "Explorers on Wheels",
+    subtitle: "Road and trail combinations",
+    image: trips[6]?.heroImage ?? trips[0].heroImage,
+    caption: "Road journeys with scenery",
+    href: "/programs/explorers-on-wheels"
+  },
+  {
+    title: "Silver Trails",
+    subtitle: "40 plus special",
+    image: trips[4]?.heroImage ?? trips[0].heroImage,
+    caption: "Calm, scenic pacing",
+    href: "/programs/silver-trails"
+  },
+  {
+    title: "Explorers Fitness Academy",
+    subtitle: "Conditioning and endurance",
+    image: trips[5]?.heroImage ?? trips[0].heroImage,
+    caption: "Morning fitness culture",
+    href: "/programs/explorers-fitness-club"
+  },
+  {
+    title: "Explorers Mountain Rush",
+    subtitle: "Performance-focused adventures",
+    image: trips[3]?.heroImage ?? trips[0].heroImage,
+    caption: "Fast mountain objectives",
+    href: "/programs/explorers-mountain-rush"
+  },
+  {
+    title: "India and International Tours",
+    subtitle: "Domestic and global journeys",
+    image: trips[9]?.heroImage ?? trips[0].heroImage,
+    caption: "Beyond the usual circuit",
+    href: "/upcoming-tours"
+  },
+  {
+    title: "Corporate Tours",
+    subtitle: "Adventure for teams",
+    image: trips[10]?.heroImage ?? trips[0].heroImage,
+    caption: "Teams out of the boardroom",
+    href: "/corporate-outings"
+  }
 ];
-
-const durations = ["Any Duration", "1-3 Days", "4-6 Days", "7+ Days"];
-
-const sidebarItems = [
-  "All Indian Trips",
-  "Weekend Treks",
-  "Himalayan Treks",
-  "Monsoon Treks",
-  "Spiritual Trails",
-  "Desert Expeditions",
-  "Coastal Escapes",
-  "Forest Trails"
-];
-
-const defaultHeroFilters: HeroFilters = {
-  query: "",
-  category: "All Trips",
-  destination: "All Destinations",
-  month: "Any Month",
-  difficulty: "Any",
-  duration: "Any Duration"
-};
-
-interface TripListResponse {
-  success: boolean;
-  total: number;
-  trips: Trip[];
-  meta?: {
-    allTrips: Trip[];
-    featuredTrips: Trip[];
-    destinations: string[];
-    categories: TripCategory[];
-  };
-  error?: string;
-}
-
-const sectionReveal = {
-  hidden: { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0 }
-};
-
-function buildTripQuery(filters: HeroFilters, sidebarCategory: string) {
-  const params = new URLSearchParams();
-
-  if (filters.query.trim()) {
-    params.set("q", filters.query.trim());
-  }
-
-  if (filters.category !== "All Trips") {
-    params.set("category", filters.category);
-  }
-
-  if (filters.destination !== "All Destinations") {
-    params.set("destination", filters.destination);
-  }
-
-  if (filters.month !== "Any Month") {
-    params.set("month", filters.month);
-  }
-
-  if (filters.difficulty !== "Any") {
-    params.set("difficulty", filters.difficulty);
-  }
-
-  if (filters.duration !== "Any Duration") {
-    params.set("duration", filters.duration);
-  }
-
-  if (sidebarCategory !== "All Indian Trips") {
-    params.set("sidebarCategory", sidebarCategory);
-  }
-
-  return params;
-}
 
 export default function HomePage() {
-  const [activeSidebar, setActiveSidebar] = useState("All Indian Trips");
-  const [heroFilters, setHeroFilters] = useState<HeroFilters>(defaultHeroFilters);
-  const [allTrips, setAllTrips] = useState<Trip[]>([]);
-  const [featuredTrips, setFeaturedTrips] = useState<Trip[]>([]);
-  const [listedTrips, setListedTrips] = useState<Trip[]>([]);
-  const [totalTrips, setTotalTrips] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [loadError, setLoadError] = useState<string>("");
-
-  const destinations = useMemo(
-    () => ["All Destinations", ...Array.from(new Set(allTrips.map((trip) => trip.destination)))],
-    [allTrips]
-  );
-
-  const categories = useMemo(
-    () =>
-      ["All Trips", ...Array.from(new Set(allTrips.map((trip) => trip.category)))] as Array<
-        TripCategory | "All Trips"
-      >,
-    [allTrips]
-  );
-
-  const fetchTrips = useCallback(async (filters: HeroFilters, sidebarCategory: string) => {
-    setIsLoading(true);
-    setLoadError("");
-
-    try {
-      const query = buildTripQuery(filters, sidebarCategory);
-      const response = await fetch(`/api/trips?${query.toString()}`, {
-        method: "GET",
-        cache: "no-store"
-      });
-
-      const data = (await response.json()) as TripListResponse;
-      if (!response.ok || !data.success) {
-        throw new Error(data.error ?? "Unable to load trips.");
-      }
-
-      setListedTrips(data.trips);
-      setTotalTrips(data.total);
-      if (data.meta) {
-        setAllTrips(data.meta.allTrips);
-        setFeaturedTrips(data.meta.featuredTrips);
-      }
-    } catch (error) {
-      setListedTrips([]);
-      setTotalTrips(0);
-      setLoadError(error instanceof Error ? error.message : "Unable to load trips.");
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    void fetchTrips(defaultHeroFilters, "All Indian Trips");
-  }, [fetchTrips]);
-
-  const handleFilterChange = <K extends keyof HeroFilters>(key: K, value: HeroFilters[K]) => {
-    setHeroFilters((prev) => ({ ...prev, [key]: value }));
-  };
-
-  const handleSearch = () => {
-    void fetchTrips(heroFilters, activeSidebar);
-  };
-
-  const handleSidebarSelect = (item: string) => {
-    setActiveSidebar(item);
-    void fetchTrips(heroFilters, item);
-  };
-
-  const destinationCards = allTrips.slice(0, 5);
-
   return (
-    <main className="min-h-screen bg-transparent text-[#2f2418]">
-      <TripTopBar />
+    <main className="pb-16">
+      <HeroPanorama slides={allHeroSlides} />
+      <WhyExplorers />
+      <StatsBar />
 
-      <div className="mx-auto w-full max-w-[1320px] px-4 pb-16 pt-4 sm:px-5">
-        <div className="grid gap-4 md:grid-cols-[240px_minmax(0,1fr)]">
-          <div>
-            <TripSidebar
-              items={sidebarItems}
-              activeItem={activeSidebar}
-              onSelect={handleSidebarSelect}
-            />
-          </div>
-
-          <div className="space-y-6">
-            <HeroSection
-              destinations={destinations}
-              months={months}
-              categories={categories}
-              durations={durations}
-              filters={heroFilters}
-              onFilterChange={handleFilterChange}
-              onSearch={handleSearch}
-            />
-
-            <motion.section
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={sectionReveal}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              className="rounded-2xl border border-[#dbcab2] bg-[#fffaf1]/95 p-4 shadow-sm sm:p-5"
+      <section className="section-shell pt-0">
+        <div className="grid gap-4 lg:grid-cols-3">
+          {primaryAccessLinks.map((item) => (
+            <Link
+              key={item.title}
+              href={item.href}
+              className="rounded-[1.8rem] border border-[#d9cfbf] bg-[#f7efe4] p-5 shadow-[0_24px_70px_rgba(31,38,26,0.08)] transition hover:-translate-y-1 hover:shadow-[0_30px_90px_rgba(31,38,26,0.12)]"
             >
-              <div className="mb-4 flex items-center justify-between">
-                <h2 className="font-display text-2xl text-[#2f2418]">Detailed Trip Pages</h2>
-                <Link href="/trips" className="text-sm font-semibold text-[#7b5a3b] hover:underline">
-                  View featured pages
-                </Link>
-              </div>
-              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-                {featuredTrips.map((trip, index) => (
-                  <motion.div
-                    key={`featured-${trip.slug}`}
-                    initial={{ opacity: 0, y: 18 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.4 }}
-                    transition={{ delay: index * 0.08, duration: 0.35, ease: "easeOut" }}
-                  >
-                    <Link
-                      href={`/trips/${trip.slug}`}
-                      className="group block overflow-hidden rounded-xl border border-[#d7c5ad] bg-[#fbf3e7]"
-                    >
-                      <div className="relative h-32">
-                        <Image
-                          src={trip.heroImage}
-                          alt={trip.name}
-                          fill
-                          sizes="(max-width: 768px) 100vw, 25vw"
-                          className="object-cover transition duration-500 group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/65 to-black/10" />
-                        <p className="absolute bottom-2 left-3 right-3 text-sm font-semibold text-white">
-                          {trip.name}
-                        </p>
-                      </div>
-                      <div className="px-3 py-2 text-xs text-[#6f5b44]">
-                        {trip.durationDays} Days | {trip.difficulty}
-                      </div>
-                    </Link>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.section>
-
-            <motion.section
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={sectionReveal}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              className="rounded-2xl border border-[#dbcab2] bg-[#fffaf1]/95 p-4 shadow-sm sm:p-5"
-            >
-              <h2 className="font-display text-2xl text-[#2f2418]">New User Exclusive</h2>
-              <div className="mt-4 grid gap-3 md:grid-cols-3">
-                <div className="rounded-xl border border-[#e3d1b8] bg-[#f8efe2] p-4">
-                  <p className="text-sm font-semibold text-[#2f2418]">Flat 10% Off on First Trip</p>
-                  <p className="mt-1 text-sm text-[#6f5b44]">Use code: EXPLORE10 at checkout.</p>
-                </div>
-                <div className="rounded-xl border border-[#d8ccb9] bg-[#f2eee6] p-4">
-                  <p className="text-sm font-semibold text-[#2f2418]">Free Trek Leader Briefing Kit</p>
-                  <p className="mt-1 text-sm text-[#6f5b44]">For all Himalayan departures.</p>
-                </div>
-                <div className="rounded-xl border border-[#ebd8bf] bg-[#f6eee2] p-4">
-                  <p className="text-sm font-semibold text-[#2f2418]">Zero-fee UPI Payments</p>
-                  <p className="mt-1 text-sm text-[#6f5b44]">Instant booking confirmation after payment.</p>
-                </div>
-              </div>
-            </motion.section>
-
-            <motion.section
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={sectionReveal}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              className="rounded-2xl border border-[#dbcab2] bg-[#fffaf1]/95 p-4 shadow-sm sm:p-5"
-            >
-              <div className="mb-4 flex items-center justify-between">
-                <h2 className="font-display text-2xl text-[#2f2418]">Get Inspired For Your Next Trip</h2>
-              </div>
-              <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
-                {destinationCards.map((trip, index) => (
-                  <motion.button
-                    key={`inspire-${trip.id}`}
-                    type="button"
-                    onClick={() => {
-                      const nextFilters = { ...heroFilters, destination: trip.destination };
-                      setHeroFilters(nextFilters);
-                      void fetchTrips(nextFilters, activeSidebar);
-                    }}
-                    initial={{ opacity: 0, y: 16 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.4 }}
-                    transition={{ delay: index * 0.07, duration: 0.35, ease: "easeOut" }}
-                    className="relative h-28 overflow-hidden rounded-xl text-left"
-                  >
-                    <Image
-                      src={trip.heroImage}
-                      alt={trip.destination}
-                      fill
-                      sizes="(max-width: 640px) 100vw, 20vw"
-                      className="h-full w-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 to-black/20" />
-                    <div className="absolute bottom-2 left-3 right-3">
-                      <p className="text-sm font-semibold text-white">{trip.destination}</p>
-                    </div>
-                  </motion.button>
-                ))}
-              </div>
-            </motion.section>
-
-            <motion.section
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={sectionReveal}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-              className="rounded-2xl border border-[#dbcab2] bg-[#fffaf1]/95 p-4 shadow-sm sm:p-5"
-            >
-              <div className="mb-4 flex items-center justify-between">
-                <h2 className="font-display text-2xl text-[#2f2418]">Indian Trips You May Like</h2>
-                <motion.p
-                  key={totalTrips}
-                  initial={{ opacity: 0.3, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.25, ease: "easeOut" }}
-                  className="text-sm text-[#7a6853]"
-                >
-                  {totalTrips} trips found
-                </motion.p>
-              </div>
-
-              {isLoading ? (
-                <div className="rounded-xl border border-[#d4c2a7] bg-[#f7f0e4] p-6 text-center text-[#6f5b44]">
-                  Fetching trips...
-                </div>
-              ) : loadError ? (
-                <div className="rounded-xl border border-[#e3b5a4] bg-[#f8e7e1] p-6 text-center text-[#7a3d2f]">
-                  {loadError}
-                </div>
-              ) : listedTrips.length === 0 ? (
-                <div className="rounded-xl border border-dashed border-[#d4c2a7] bg-[#f7f0e4] p-6 text-center text-[#6f5b44]">
-                  No trips match your filters. Try changing search, month, destination, or difficulty.
-                </div>
-              ) : (
-                <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-                  {listedTrips.map((trip, index) => (
-                    <motion.div
-                      key={trip.id}
-                      initial={{ opacity: 0, y: 22 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, amount: 0.2 }}
-                      transition={{ delay: index * 0.03, duration: 0.35, ease: "easeOut" }}
-                      className="h-full"
-                    >
-                      <TripCard trip={trip} />
-                    </motion.div>
-                  ))}
-                </div>
-              )}
-            </motion.section>
-
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              variants={sectionReveal}
-              transition={{ duration: 0.4, ease: "easeOut" }}
-            >
-              <SocialProof />
-            </motion.div>
-          </div>
+              <p className="section-tag">Easy Access</p>
+              <h2 className="mt-4 font-display text-3xl text-[#112315]">{item.title}</h2>
+              <p className="mt-3 text-sm leading-7 text-[#565c51]">{item.description}</p>
+              <p className="mt-4 text-sm font-semibold text-[#8a5c35]">Open now</p>
+            </Link>
+          ))}
         </div>
-      </div>
+      </section>
 
-      <ExplorersAIBot />
+      <AtlasSection />
+      <FeaturedProgramsGrid programs={featuredPrograms} />
+
+      <section className="section-shell">
+        <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p className="section-tag">Upcoming Treks</p>
+            <h2 className="mt-4 font-display text-4xl text-[#112315] sm:text-5xl">
+              Browse the trek board directly from the home page.
+            </h2>
+          </div>
+          <Link
+            href="/trips"
+            className="inline-flex items-center rounded-full bg-[#d37a31] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#e38940]"
+          >
+            View All Trek Listings
+          </Link>
+        </div>
+
+        <div className="hidden overflow-hidden rounded-[2rem] border border-[#d8cfbf] bg-[#f8f1e6] shadow-[0_24px_70px_rgba(30,36,27,0.08)] lg:block">
+          <table className="w-full border-collapse">
+            <thead className="bg-[#182a1a] text-left text-xs uppercase tracking-[0.18em] text-[#efe5d8]">
+              <tr>
+                <th className="px-5 py-4">Date / Batch Window</th>
+                <th className="px-5 py-4">Trek Name</th>
+                <th className="px-5 py-4">Duration</th>
+                <th className="px-5 py-4">Difficulty</th>
+                <th className="px-5 py-4">Cost</th>
+              </tr>
+            </thead>
+            <tbody>
+              {trips.slice(0, 5).map((trip) => (
+                <tr key={trip.slug} className="border-t border-[#e1d7c8] text-sm text-[#334234]">
+                  <td className="px-5 py-4">{getBatchWindow(trip)}</td>
+                  <td className="px-5 py-4">
+                    <Link
+                      href={`/tours/${trip.slug}`}
+                      className="font-semibold text-[#8a5c35] transition hover:text-[#d37a31]"
+                    >
+                      {trip.name}
+                    </Link>
+                  </td>
+                  <td className="px-5 py-4">{trip.durationDays} Days</td>
+                  <td className="px-5 py-4">{trip.difficulty}</td>
+                  <td className="px-5 py-4">INR {trip.price.toLocaleString()}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="grid gap-4 lg:hidden">
+          {trips.slice(0, 4).map((trip) => (
+            <Link
+              key={trip.slug}
+              href={`/tours/${trip.slug}`}
+              className="rounded-[1.8rem] border border-[#d9cfbf] bg-[#f8f1e6] p-5 shadow-[0_20px_60px_rgba(30,36,27,0.08)]"
+            >
+              <p className="text-xs uppercase tracking-[0.18em] text-[#8a5c35]">{getBatchWindow(trip)}</p>
+              <h3 className="mt-3 font-display text-3xl text-[#162214]">{trip.name}</h3>
+              <p className="mt-2 text-sm text-[#53594f]">
+                {trip.durationDays} Days | {trip.difficulty} | INR {trip.price.toLocaleString()}
+              </p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="section-shell">
+        <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p className="section-tag">Upcoming Highlights</p>
+            <h2 className="mt-4 font-display text-4xl text-[#112315] sm:text-5xl">
+              Signature departures currently shaping the season.
+            </h2>
+          </div>
+          <Link
+            href="/trips"
+            className="text-sm font-semibold text-[#8a5c35] transition hover:text-[#d37a31]"
+          >
+            Explore all detailed trek pages
+          </Link>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {featuredTrips.map((trip) => (
+            <Link
+              key={trip.slug}
+              href={`/tours/${trip.slug}`}
+              className="group overflow-hidden rounded-[2rem] border border-[#d7cebf] bg-[#f7efe4] shadow-[0_24px_70px_rgba(31,38,26,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_30px_90px_rgba(31,38,26,0.14)]"
+            >
+              <div className="relative h-80 overflow-hidden">
+                <Image
+                  src={trip.heroImage}
+                  alt={trip.name}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
+                  className="object-cover transition duration-700 group-hover:scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4">
+                  <p className="mb-3 w-fit rounded-full bg-black/35 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-[#f2dcc2]">
+                    {trip.destination}
+                  </p>
+                  <h3 className="font-display text-3xl text-white">{trip.name}</h3>
+                </div>
+              </div>
+              <div className="space-y-3 p-5">
+                <p className="text-sm leading-7 text-[#53584d]">{trip.summary}</p>
+                <div className="flex items-center justify-between text-sm font-semibold text-[#223224]">
+                  <span>{trip.durationDays} Days</span>
+                  <span>{trip.difficulty}</span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <TestimonialsTabs />
+      <SocialEmbeds />
+      <QuickLinksSection links={footerQuickLinks} />
     </main>
   );
 }

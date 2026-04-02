@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import TripDetailsTemplate from "@/components/trips/TripDetailsTemplate";
-import { getFeaturedTrips, getTripBySlug } from "@/lib/trip-store";
+import { getAllTrips, getFeaturedTrips, getTripBySlug } from "@/lib/trip-store";
 
 interface FeaturedTripPageProps {
   params: {
@@ -36,5 +36,11 @@ export default async function FeaturedTripPage({ params }: FeaturedTripPageProps
     notFound();
   }
 
-  return <TripDetailsTemplate trip={trip} />;
+  const allTrips = await getAllTrips();
+  const relatedTrips = allTrips
+    .filter((candidate) => candidate.slug !== trip.slug)
+    .filter((candidate) => candidate.category === trip.category || candidate.region === trip.region)
+    .slice(0, 3);
+
+  return <TripDetailsTemplate trip={trip} relatedTrips={relatedTrips} />;
 }
