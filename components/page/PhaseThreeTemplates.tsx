@@ -1,5 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
+import UniversalEnquiryForm from "@/components/forms/UniversalEnquiryForm";
+import { EnquiryVariant } from "@/types/enquiry";
 
 export interface PageStat {
   label: string;
@@ -27,6 +29,14 @@ export interface PageCard {
   meta?: string;
 }
 
+export interface EnquiryFormBlock {
+  variant: EnquiryVariant;
+  title: string;
+  description: string;
+  contextTitle?: string;
+  contextLabel?: string;
+}
+
 interface EditorialLandingPageProps {
   eyebrow: string;
   title: string;
@@ -37,6 +47,7 @@ interface EditorialLandingPageProps {
   stats?: PageStat[];
   sections?: PageSection[];
   cards?: PageCard[];
+  enquiryForm?: EnquiryFormBlock;
   ctaTitle?: string;
   ctaDescription?: string;
   ctaActions?: PageAction[];
@@ -51,6 +62,7 @@ interface EditorialDetailPageProps {
   meta?: PageStat[];
   sections: PageSection[];
   relatedCards?: PageCard[];
+  enquiryForm?: EnquiryFormBlock;
   inquiryTitle?: string;
   inquiryDescription?: string;
   inquiryActions?: PageAction[];
@@ -66,6 +78,7 @@ export function EditorialLandingPage({
   stats,
   sections,
   cards,
+  enquiryForm,
   ctaTitle,
   ctaDescription,
   ctaActions
@@ -193,6 +206,12 @@ export function EditorialLandingPage({
         </section>
       ) : null}
 
+      {enquiryForm ? (
+        <section className="section-shell">
+          <UniversalEnquiryForm {...enquiryForm} />
+        </section>
+      ) : null}
+
       {ctaTitle && ctaDescription ? (
         <section className="section-shell">
           <div className="overflow-hidden rounded-[2.4rem] border border-[#d8cfbf] bg-[#162917] p-8 text-[#f2eadf] shadow-[0_28px_80px_rgba(18,29,20,0.24)]">
@@ -226,6 +245,7 @@ export function EditorialDetailPage({
   meta,
   sections,
   relatedCards,
+  enquiryForm,
   inquiryTitle,
   inquiryDescription,
   inquiryActions
@@ -339,6 +359,8 @@ export function EditorialDetailPage({
                 </div>
               </div>
             ) : null}
+
+            {enquiryForm ? <UniversalEnquiryForm {...enquiryForm} /> : null}
           </aside>
         </div>
       </section>

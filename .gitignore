@@ -3,6 +3,7 @@ node_modules/
 out/
 .m2/
 .tmp/
+.tmp/**
 
 .env
 .env.local

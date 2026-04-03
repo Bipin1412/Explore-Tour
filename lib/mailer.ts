@@ -1,6 +1,7 @@
 import nodemailer from "nodemailer";
 import { BookingInput } from "@/lib/validators/booking";
 import { AppBooking } from "@/lib/db";
+import { AppEnquiryRecord } from "@/types/enquiry";
 
 const getTransporter = () => {
   const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
@@ -79,6 +80,34 @@ export async function sendPaymentConfirmedEmail(booking: AppBooking): Promise<vo
     from: process.env.BOOKING_FROM_EMAIL ?? process.env.SMTP_USER,
     to,
     subject: `[Explorers Group] Payment Confirmed - ${booking.tripName}`,
+    html
+  });
+}
+
+export async function sendEnquiryEmail(enquiry: AppEnquiryRecord): Promise<void> {
+  const transporter = getTransporter();
+  const to = process.env.BOOKING_ALERT_EMAIL ?? process.env.ENQUIRY_ALERT_EMAIL;
+
+  if (!transporter || !to) {
+    return;
+  }
+
+  const fields = Object.entries(enquiry.payload.data)
+    .map(([key, value]) => `<p><strong>${key}:</strong> ${String(value || "N/A")}</p>`)
+    .join("");
+
+  const html = `
+    <h2>New Explorers Group Enquiry</h2>
+    <p><strong>Enquiry ID:</strong> ${enquiry.id}</p>
+    <p><strong>Variant:</strong> ${enquiry.variant}</p>
+    <p><strong>Created At:</strong> ${enquiry.createdAt}</p>
+    ${fields}
+  `;
+
+  await transporter.sendMail({
+    from: process.env.BOOKING_FROM_EMAIL ?? process.env.SMTP_USER,
+    to,
+    subject: `[Explorers Group] Enquiry - ${enquiry.variant}`,
     html
   });
 }

@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import Link from "next/link";
 import { QRCodeSVG } from "qrcode.react";
+import UniversalEnquiryForm from "@/components/forms/UniversalEnquiryForm";
 import { buildPaymentQrValue, paymentInfo } from "@/data/payment-info";
 
 const inquiryFields = [
@@ -101,6 +102,12 @@ export default function ContactExperience() {
               </ul>
             </div>
           </article>
+
+          <UniversalEnquiryForm
+            variant="contact"
+            title="Contact enquiry form"
+            description="Use this to send a real enquiry for treks, tours, payments, schools, custom travel, or anything else you want the team to help with."
+          />
 
           <div className="space-y-8">
             <article className="editorial-panel">

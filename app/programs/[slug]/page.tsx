@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import JuniorExplorersPage from "@/components/page/JuniorExplorersPage";
+import LadyExplorersPage from "@/components/page/LadyExplorersPage";
+import SilverTrailsPage from "@/components/page/SilverTrailsPage";
 import { EditorialDetailPage } from "@/components/page/PhaseThreeTemplates";
 import { specialtyPrograms } from "@/data/phase3-content";
 
@@ -29,6 +32,18 @@ export default function ProgramDetailPage({ params }: ProgramDetailPageProps) {
   const item = specialtyPrograms.find((entry) => entry.slug === params.slug);
   if (!item) {
     notFound();
+  }
+
+  if (item.slug === "junior-explorers") {
+    return <JuniorExplorersPage />;
+  }
+
+  if (item.slug === "lady-explorers") {
+    return <LadyExplorersPage />;
+  }
+
+  if (item.slug === "silver-trails") {
+    return <SilverTrailsPage />;
   }
 
   return (

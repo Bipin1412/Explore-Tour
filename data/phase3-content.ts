@@ -1,4 +1,10 @@
-import type { PageAction, PageCard, PageSection, PageStat } from "@/components/page/PhaseThreeTemplates";
+import type {
+  EnquiryFormBlock,
+  PageAction,
+  PageCard,
+  PageSection,
+  PageStat
+} from "@/components/page/PhaseThreeTemplates";
 import { trips } from "@/lib/data/trips";
 
 export interface LandingPageContent {
@@ -11,6 +17,7 @@ export interface LandingPageContent {
   stats?: PageStat[];
   sections?: PageSection[];
   cards?: PageCard[];
+  enquiryForm?: EnquiryFormBlock;
   ctaTitle?: string;
   ctaDescription?: string;
   ctaActions?: PageAction[];
@@ -26,6 +33,7 @@ export interface DetailPageContent {
   meta?: PageStat[];
   sections: PageSection[];
   relatedCards?: PageCard[];
+  enquiryForm?: EnquiryFormBlock;
   inquiryTitle?: string;
   inquiryDescription?: string;
   inquiryActions?: PageAction[];
@@ -183,6 +191,11 @@ export const corporateOutingsPage: LandingPageContent = {
       ]
     }
   ],
+  enquiryForm: {
+    variant: "corporate",
+    title: "Corporate enquiry form",
+    description: "Share your team size, outing type, and preferred location so the team can shape the right offsite format."
+  },
   ctaTitle: "Planning a company offsite or leadership reset?",
   ctaDescription:
     "Share your headcount, preferred region, budget bracket, and event intent, and we can shape a custom corporate adventure flow around it.",
@@ -485,6 +498,12 @@ export const internationalToursHubPage = buildHubPage(
   "/contact-us"
 );
 
+internationalToursHubPage.enquiryForm = {
+  variant: "international",
+  title: "International tour enquiry form",
+  description: "Use this form to share purpose, dates, and hotel preference before the team starts shaping the itinerary."
+};
+
 function buildDestination(
   slug: string,
   title: string,
@@ -524,6 +543,16 @@ function buildDestination(
         ]
       }
     ],
+    enquiryForm: {
+      variant: eyebrow === "Jungle Safari" ? "safari" : "camping",
+      title: eyebrow === "Jungle Safari" ? "Safari enquiry form" : "Camping enquiry form",
+      description:
+        eyebrow === "Jungle Safari"
+          ? "Share your travel month, group size, and wildlife intent so the team can recommend the right safari route."
+          : "Share your travel month, group size, and stay style so the team can recommend the right camping package.",
+      contextTitle: title,
+      contextLabel: eyebrow === "Jungle Safari" ? "Selected Safari" : "Selected Camping Destination"
+    },
     inquiryTitle: "Want pricing or a private batch?",
     inquiryDescription:
       "Share your travel month, expected group size, and preferred comfort style. This page is ready for UI use now and can be connected to final inventory later.",
@@ -578,6 +607,13 @@ function buildInternational(
         ]
       }
     ],
+    enquiryForm: {
+      variant: "international",
+      title: "Destination enquiry form",
+      description: "Share your dates, hotel style, and group purpose so the team can start building this itinerary.",
+      contextTitle: title,
+      contextLabel: "Selected Destination"
+    },
     inquiryTitle: "Planning an international departure?",
     inquiryDescription:
       `Use this page as the destination entry point, then contact the team with your dates, group type, and hotel preference to shape the final itinerary for ${title}.`,
@@ -630,6 +666,13 @@ function buildProgram(
         ]
       }
     ],
+    enquiryForm: {
+      variant: "specialty",
+      title: "Program enquiry form",
+      description: "Use this form to ask about batches, age fit, timing, and how this program works.",
+      contextTitle: title,
+      contextLabel: "Selected Program"
+    },
     inquiryTitle: "Interested in this program line?",
     inquiryDescription:
       `Use the contact page to ask about the next ${title} batch, typical audience fit, or how this program differs from the main trek board.`,
