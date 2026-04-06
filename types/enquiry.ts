@@ -4,7 +4,8 @@ export type EnquiryVariant =
   | "international"
   | "specialty"
   | "camping"
-  | "safari";
+  | "safari"
+  | "mountain-run";
 
 export interface BaseEnquiryRecord {
   id: string;
@@ -87,6 +88,18 @@ export interface SafariEnquiryInput {
   message?: string;
 }
 
+export interface MountainRunEnquiryInput {
+  fullName: string;
+  age: string;
+  gender: string;
+  city: string;
+  phone: string;
+  email: string;
+  emergencyContact: string;
+  selectedDistanceCategory: string;
+  medicalConditions?: string;
+}
+
 export type EnquiryInputMap = {
   contact: ContactEnquiryInput;
   corporate: CorporateEnquiryInput;
@@ -94,6 +107,7 @@ export type EnquiryInputMap = {
   specialty: SpecialtyEnquiryInput;
   camping: CampingEnquiryInput;
   safari: SafariEnquiryInput;
+  "mountain-run": MountainRunEnquiryInput;
 };
 
 export interface AppEnquiryRecord extends BaseEnquiryRecord {

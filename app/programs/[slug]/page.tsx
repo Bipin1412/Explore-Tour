@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import ExplorersMountainRunPage from "@/components/page/ExplorersMountainRunPage";
 import JuniorExplorersPage from "@/components/page/JuniorExplorersPage";
 import LadyExplorersPage from "@/components/page/LadyExplorersPage";
+import ExplorersOnWheelsPage from "@/components/page/ExplorersOnWheelsPage";
 import SilverTrailsPage from "@/components/page/SilverTrailsPage";
 import { EditorialDetailPage } from "@/components/page/PhaseThreeTemplates";
 import { specialtyPrograms } from "@/data/phase3-content";
@@ -44,6 +46,14 @@ export default function ProgramDetailPage({ params }: ProgramDetailPageProps) {
 
   if (item.slug === "silver-trails") {
     return <SilverTrailsPage />;
+  }
+
+  if (item.slug === "explorers-on-wheels") {
+    return <ExplorersOnWheelsPage />;
+  }
+
+  if (item.slug === "explorers-mountain-rush") {
+    return <ExplorersMountainRunPage />;
   }
 
   return (

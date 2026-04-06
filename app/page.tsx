@@ -92,10 +92,10 @@ const featuredPrograms = [
     href: "/programs/explorers-fitness-club"
   },
   {
-    title: "Explorers Mountain Rush",
-    subtitle: "Performance-focused adventures",
+    title: "Explorers Mountain Run",
+    subtitle: "Quarterly outdoor trail event",
     image: trips[3]?.heroImage ?? trips[0].heroImage,
-    caption: "Fast mountain objectives",
+    caption: "Run the trails, discover your strength",
     href: "/programs/explorers-mountain-rush"
   },
   {

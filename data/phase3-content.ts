@@ -467,7 +467,7 @@ export const specialtyPrograms: DetailPageContent[] = [
   buildProgram("silver-trails", "Silver Trails", "Speciality Program", coastalImage, "40 plus explorers seeking scenic, structured, and well-paced adventure formats."),
   buildProgram("explorers-on-wheels", "Explorers on Wheels", "Speciality Program", coastalImage, "Road journeys blended with light outdoor movement, local culture, and scenic stops."),
   buildProgram("explorers-fitness-club", "Explorers Fitness Club", "Speciality Program", sahyadriImage, "Morning outdoor fitness circles designed around consistency, terrain, and community discipline."),
-  buildProgram("explorers-mountain-rush", "Explorers Mountain Rush", "Speciality Program", himalayaImage, "Performance-focused mountain training and challenge departures for ambitious explorers."),
+  buildProgram("explorers-mountain-rush", "Explorers Mountain Run", "Speciality Program", himalayaImage, "Quarterly outdoor trail events for all age groups across forts, forests, and mountain paths."),
   buildProgram("atlas", "ATLAS Academy", "Adventure Training Leaders Academy for Sahyadri", forestImage, "Leadership training for route operations, field communication, participant care, and responsible outdoor facilitation.")
 ];
 

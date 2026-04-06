@@ -80,13 +80,26 @@ const safariSchema = z.object({
   message: optionalLongText
 });
 
+const mountainRunSchema = z.object({
+  fullName: shortText("Full name"),
+  age: compactText("Age"),
+  gender: shortText("Gender"),
+  city: shortText("City"),
+  phone: phoneField,
+  email: z.string().email("Invalid email"),
+  emergencyContact: phoneField,
+  selectedDistanceCategory: shortText("Selected distance category"),
+  medicalConditions: optionalLongText
+});
+
 export const enquirySchemaMap = {
   contact: contactSchema,
   corporate: corporateSchema,
   international: internationalSchema,
   specialty: specialtySchema,
   camping: campingSchema,
-  safari: safariSchema
+  safari: safariSchema,
+  "mountain-run": mountainRunSchema
 } satisfies Record<EnquiryVariant, z.ZodTypeAny>;
 
 export function getEnquirySchema(variant: EnquiryVariant) {

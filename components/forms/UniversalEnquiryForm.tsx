@@ -147,6 +147,31 @@ const variantMeta: Record<
       selectField("travelMonth", "Preferred Month", monthOptions),
       field("message", "Additional Note", "Tell us the kind of wildlife trip you want", "textarea")
     ]
+  },
+  "mountain-run": {
+    intro: "This registration form captures the exact basics needed to place the runner in the right category while keeping the event safe and well coordinated.",
+    submitLabel: "Register Interest Now",
+    fields: (contextTitle) => [
+      field("fullName", "Full Name", "Runner name"),
+      field("age", "Age", "Participant age"),
+      selectField("gender", "Gender", ["Male", "Female", "Other", "Prefer not to say"]),
+      field("city", "City", "Pune, Mumbai, Nashik"),
+      field("phone", "Mobile Number", "+91 98765 43210", "tel"),
+      field("email", "Email ID", "you@example.com", "email"),
+      field("emergencyContact", "Emergency Contact", "+91 98765 43210", "tel"),
+      selectField("selectedDistanceCategory", "Selected Distance Category", [
+        contextTitle ?? "Explorers Mountain Run",
+        "Kids Explorers Run | 500 m - 1 km | Age 5 - 8",
+        "Junior Explorers Run | 2 - 3 km | Age 8 - 12",
+        "Teen Trail Run | 3 - 5 km | Age 12 - 14",
+        "Youth Adventure Run | 5 - 7 km | Age 14 - 18",
+        "Open Trail Run | 7 km | Age 18+",
+        "Open Trail Run | 12 km | Age 18+",
+        "Challenge Trail Run | 21 km | Age 18+",
+        "Senior Explorers Run | 3 - 5 km | Age 50+"
+      ]),
+      field("medicalConditions", "Medical Conditions", "Optional health notes", "textarea")
+    ]
   }
 };
 
