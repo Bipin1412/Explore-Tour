@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { EditorialLandingPage } from "@/components/page/PhaseThreeTemplates";
-import { campingHubPage } from "@/data/phase3-content";
+import CampingExperiencesPage from "@/components/page/CampingExperiencesPage";
 
 export const metadata: Metadata = {
   title: "Camping | Explorers Group",
-  description: "Browse camping destinations including Pawna, Panshet, Mulshi, Malvan, Revdanda, and Madheghat."
+  description:
+    "Premium camping page for Pawna, Vasota, Bhandardara, Panshet, beach camps, fort camps, and custom outdoor stays across Maharashtra."
 };
 
 export default function CampingPage() {
-  return <EditorialLandingPage {...campingHubPage} />;
+  return <CampingExperiencesPage />;
 }

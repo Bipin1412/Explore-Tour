@@ -393,35 +393,95 @@ export const equipmentRentalPage: LandingPageContent = {
 };
 
 export const campingDestinations: DetailPageContent[] = [
-  buildDestination("pawna", "Pawna Lake Camping", "Camping Packages", coastalImage, "Lakeside tents, sunset decks, and relaxed group evenings.", [
-    "Ideal for quick group escapes from Pune and Mumbai.",
-    "Campfire zones, lakeside seating, and beginner-friendly outdoor comfort.",
-    "Suitable for friends, student batches, and relaxed corporate nights."
+  buildDestination("pawna", "Pawna Lake Camping", "Camping Packages", coastalImage, "Lakeside camping near Pune with scenic views, bonfire, music, and local delicious food.", [
+    "Ideal for weekend getaways with optional trekking and boating activities.",
+    "Offers dome tents, glamping tents, Swiss cottage tents, and villa stay formats.",
+    "Best suited for friend groups, families, and quick outdoor escapes from Pune and Mumbai."
   ]),
-  buildDestination("panshet", "Panshet Camping", "Camping Packages", forestImage, "Reservoir-side camp setups with easy outdoor activity access.", [
-    "Works well for day-to-night group movements and youth batches.",
-    "Add kayaking, team games, or wellness-style nature time.",
-    "Flexible for short corporate and community-led events."
+  buildDestination("vasota", "Vasota Lakeside Camping", "Camping Packages", forestImage, "Camping near Shivsagar Lake with wilderness vibes, night camping, and Vasota trek access.", [
+    "Best for nature lovers and adventure seekers who want a more raw outdoor setting.",
+    "Pairs naturally with the Vasota route and deeper lakeside wilderness atmosphere.",
+    "Can include hotel room options for groups wanting a softer overnight layer."
   ]),
-  buildDestination("mulshi", "Mulshi Camping", "Camping Packages", valleyImage, "Scenic monsoon-friendly camps with premium natural mood.", [
+  buildDestination("bhandardara", "Bhandardara Lake Camping", "Camping Packages", valleyImage, "Peaceful lakeside camping near Arthur Lake with waterfall views and stargazing mood.", [
+    "A strong fit for families, friend circles, and slower scenic group outings.",
+    "Can be combined with trekking routes, waterfall viewpoints, and quiet overnight stays.",
+    "Available in dome tent, hotel room, and luxury hotel style depending on requirement."
+  ]),
+  buildDestination("malshejghat", "Malshej Ghat Lakeside Camping", "Camping Packages", valleyImage, "Monsoon and winter camping surrounded by mountains, fog, and waterfalls.", [
+    "Includes access to short treks, scenic driving, and birdwatching opportunities.",
+    "Works beautifully as a monsoon-heavy visual destination.",
+    "Can be planned with dome tents, hotel rooms, or more comfort-led stays."
+  ]),
+  buildDestination("mahabaleshwar", "Mahabaleshwar Camping", "Camping Packages", forestImage, "Hill-station camping amidst forests and valleys with cool weather and sunrise viewpoints.", [
+    "A softer camping option for people who want climate, greenery, and nearby trek movement.",
+    "Useful for families and groups wanting camping with a hill-station mood.",
+    "Can be designed with tents, hotel rooms, or premium stay options."
+  ]),
+  buildDestination("kolad", "Kolad Camping", "Camping Packages", forestImage, "Riverside camping near Kundalika River with adventure-led energy.", [
+    "Popular for rafting, kayaking, and activity-heavy group formats.",
+    "A strong fit for corporates, youth groups, and friends who want movement through the stay.",
+    "Works well as a day-to-night or weekend activity circuit."
+  ]),
+  buildDestination("panshet", "Panshet Camping", "Camping Packages", coastalImage, "Lake-view camping close to Pune with calm surroundings, water activities, and beginner-friendly treks.", [
+    "Minimum five campsite options can be arranged with villa and glamping tent choices.",
+    "Great for groups wanting quick access, good views, and flexible comfort levels.",
+    "Works for family outings, student groups, and corporate day-to-night formats."
+  ]),
+  buildDestination("mulshi", "Mulshi Camping", "Camping Packages", valleyImage, "Scenic camp settings with premium natural mood during monsoon and winter windows.", [
     "Great for couples, small groups, and quiet premium getaways.",
-    "Strong visual atmosphere during monsoon and winter windows.",
-    "Pairs well with soft outdoor activity and photography-led experiences."
+    "Strong visual atmosphere with fog, hills, and slow-travel energy.",
+    "Pairs well with photography-led, restful, and softer outdoor weekends."
   ]),
-  buildDestination("malvan", "Malvan Coastal Camping", "Camping Packages", coastalImage, "Beachside stay concepts with sea views and activity options.", [
-    "Best for sea breeze evenings, food culture, and coastal add-ons.",
-    "Can be paired with snorkeling, fort visits, or local sightseeing.",
-    "Good fit for families and friend circles wanting a lighter adventure tone."
+  buildDestination("revdanda", "Revdanda Beach Camping", "Camping Packages", coastalImage, "Beach camping near Alibaug with sea breeze, bonfire, and coastal walks.", [
+    "A relaxed group format for friend circles and easy weekend escapes.",
+    "Can blend beach time, night camp atmosphere, and short coastal movement.",
+    "Useful for people who want camping with a lighter adventure tone."
   ]),
-  buildDestination("revdanda", "Revdanda Camping", "Camping Packages", coastalImage, "A mellow beach-camp format with fort and shoreline atmosphere.", [
-    "Strong choice for weekend relaxation with easy accessibility.",
-    "Useful for youth groups and mixed-age circles.",
-    "Can blend heritage and beach movement in one short itinerary."
+  buildDestination("alibaug", "Alibaug Beach Camping", "Camping Packages", coastalImage, "Beachside camping with easy sea access, sunset time, and soft coastal energy.", [
+    "Useful for quick coastal departures from Pune or Mumbai.",
+    "Can include hotel rooms and villas for groups wanting a more flexible stay style.",
+    "A strong option for beach mood without giving up the camping atmosphere."
   ]),
-  buildDestination("madheghat", "Madheghat Camping", "Camping Packages", sahyadriImage, "Waterfall-facing seasonal camps with a rugged Sahyadri feel.", [
-    "Best during lush monsoon windows and shoulder-season greenery.",
-    "Works for trekking plus campfire combinations.",
-    "Offers a more raw mountain atmosphere than lakeside camp styles."
+  buildDestination("malvan", "Malvan Beach Camping", "Camping Packages", coastalImage, "Konkan beach camping with local Malvani food, water sports, snorkeling, and coastal exploration.", [
+    "Best for food-loving groups who want sea activity, local culture, and scenic overnight stays.",
+    "Can include hotel rooms or villa options depending on travel style.",
+    "Good for families and friend circles wanting a coastal camping circuit."
+  ]),
+  buildDestination("uran", "Uran Beach Camping", "Camping Packages", coastalImage, "A short coastal outing format for beachside camping, calm evenings, and simple group time.", [
+    "Works well when accessibility and relaxed sea-breeze atmosphere both matter.",
+    "Can be tuned toward youth groups, mixed-age circles, or casual weekend stays.",
+    "Offers a cleaner entry point into beach camping without a heavy travel load."
+  ]),
+  buildDestination("madheghat", "Madheghat Camping", "Camping Packages", sahyadriImage, "Forest-side camping near waterfalls and historical routes for offbeat nature stays.", [
+    "Suitable for quiet camping with a stronger trekking and history backdrop.",
+    "Best during lush seasonal windows when the landscape feels raw and dramatic.",
+    "Ideal for explorers who prefer offbeat over crowded camping circuits."
+  ]),
+  buildDestination("tikona", "Tikona Fort Camping", "Camping Packages", sahyadriImage, "Camping at the base of Tikona Fort with views of Pawna Lake and an early-morning fort climb.", [
+    "Strong option for people who want a fort plus camping combination in one short trip.",
+    "Offers night views, classic Sahyadri movement, and easy add-on trekking.",
+    "Good for beginner and mixed-age groups who still want a real mountain feel."
+  ]),
+  buildDestination("rajmachi", "Rajmachi Fort Camping", "Camping Packages", sahyadriImage, "A popular Sahyadri camping location with fireflies season treks, historic forts, and scenic trails.", [
+    "One of the strongest storytelling destinations for fort, trail, and night-stay atmosphere.",
+    "Good fit for monsoon, fireflies, and heritage-rich trekking groups.",
+    "Can blend camping with classic Rajmachi movement and fort exploration."
+  ]),
+  buildDestination("prabalmachi", "Prabalmachi Fort Camping", "Camping Packages", sahyadriImage, "Beginner-friendly camping with plateau views and short trek options near the Mumbai-Pune belt.", [
+    "Useful for first-time campers who want approachable terrain and good scenery.",
+    "Pairs naturally with short hikes and easy overnight group energy.",
+    "A practical option for youth groups and fast weekend departures."
+  ]),
+  buildDestination("raireshwar", "Raireshwar Camping", "Camping Packages", valleyImage, "Plateau-side camping with open views, fresh wind, and heritage-rich surroundings.", [
+    "A scenic option for explorers who want quiet spaces and strong landscape character.",
+    "Works well for relaxed groups, history-led movement, and outdoor reset weekends.",
+    "Can be shaped into a softer or more active trip depending on the audience."
+  ]),
+  buildDestination("harishchandragad", "Harishchandragad Camping", "Camping Packages", sahyadriImage, "High-altitude camping for experienced trekkers with Konkan Kada views, night trekking, and star-filled skies.", [
+    "Best for stronger trekkers who want a rugged overnight mountain experience.",
+    "Carries a deeper sense of challenge and reward than beginner-friendly campsites.",
+    "A natural fit for raw trail lovers, endurance groups, and classic Sahyadri seekers."
   ])
 ];
 
