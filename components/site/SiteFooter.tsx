@@ -8,6 +8,7 @@ import {
   footerQuickLinks
 } from "@/data/navigation";
 import { paymentInfo } from "@/data/payment-info";
+import BrandLogo from "@/components/site/BrandLogo";
 
 export default function SiteFooter() {
   return (
@@ -19,7 +20,7 @@ export default function SiteFooter() {
       <div className="mx-auto grid w-full max-w-[1400px] gap-8 px-4 py-14 sm:px-6 lg:grid-cols-[1.1fr_1fr_1fr_1fr] lg:px-8">
         <div className="space-y-5">
           <div>
-            <p className="font-display text-3xl uppercase tracking-[0.16em] text-white">Explorers</p>
+            <BrandLogo size="footer" />
             <p className="mt-2 max-w-md text-sm leading-7 text-[#b7baaf]">
               Premium outdoor journeys, camps, trainings, and community-led adventures across Sahyadri, the Himalaya, wildlife circuits, and international escapes.
             </p>

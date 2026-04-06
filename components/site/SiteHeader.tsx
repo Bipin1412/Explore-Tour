@@ -4,6 +4,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { contactItem, navigationItems } from "@/data/navigation";
 import { paymentInfo } from "@/data/payment-info";
+import BrandLogo from "@/components/site/BrandLogo";
 import GlobalSearchBar from "@/components/site/GlobalSearchBar";
 import MegaMenu from "@/components/site/MegaMenu";
 import MobileNav from "@/components/site/MobileNav";
@@ -20,14 +21,9 @@ export default function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 overflow-visible border-b border-white/10 bg-[rgba(10,23,14,0.82)] backdrop-blur-2xl">
       <div className="mx-auto flex w-full max-w-[1400px] items-center gap-3 overflow-visible px-4 py-4 sm:px-6 lg:px-8">
-        <Link href="/" className="min-w-0 flex-1 2xl:flex-none">
-          <span className="block font-display text-2xl uppercase tracking-[0.12em] text-[#f7f0e8] sm:text-3xl sm:tracking-[0.18em]">
-            Explorers
-          </span>
-          <span className="hidden text-[10px] uppercase tracking-[0.24em] text-[#c8a783] sm:block sm:tracking-[0.34em]">
-            Since 2001 | The Name of Excellence
-          </span>
-        </Link>
+        <div className="min-w-0 flex-1 2xl:flex-none">
+          <BrandLogo />
+        </div>
 
         <div className="hidden 2xl:block 2xl:flex-1">
           <GlobalSearchBar compact />
