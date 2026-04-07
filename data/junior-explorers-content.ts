@@ -1,5 +1,3 @@
-import { trips } from "@/lib/data/trips";
-
 export interface JuniorExplorerBenefit {
   title: string;
   description: string;
@@ -8,6 +6,20 @@ export interface JuniorExplorerBenefit {
 export interface JuniorExplorerLearningCard {
   title: string;
   description: string;
+}
+
+export interface JuniorExplorerMoment {
+  title: string;
+  description: string;
+  image: string;
+  caption: string;
+}
+
+export interface JuniorExplorerSummerCampCard {
+  title: string;
+  description: string;
+  image: string;
+  caption: string;
 }
 
 export interface JuniorExplorerScheduleItem {
@@ -19,15 +31,9 @@ export interface JuniorExplorerScheduleItem {
   cost?: string;
 }
 
-const heroImage =
-  trips[0]?.heroImage ??
-  "https://images.unsplash.com/photo-1508264165352-258db2ebd59b?auto=format&fit=crop&w=1400&q=80";
-const supportImage =
-  trips[2]?.heroImage ??
-  "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=1400&q=80";
-const learningImage =
-  trips[1]?.heroImage ??
-  "https://images.unsplash.com/photo-1464278533981-50106e6176b1?auto=format&fit=crop&w=1400&q=80";
+const heroImage = "/content/junior-explorers/trek-hero.jpg";
+const supportImage = "/content/junior-explorers/rappelling-support.jpg";
+const learningImage = "/content/junior-explorers/tent-camp.jpg";
 
 export const juniorExplorersContent = {
   eyebrow: "Junior Explorers",
@@ -96,6 +102,38 @@ export const juniorExplorersContent = {
       description: "They learn why saying no to plastic and yes to clean trails is part of being a responsible explorer."
     }
   ] satisfies JuniorExplorerLearningCard[],
+  fieldMoments: [
+    {
+      title: "Rope activities build courage",
+      description: "Children learn trust, balance, and body confidence through supervised rope challenges.",
+      image: "/content/junior-explorers/field-moments/rope-activity.jpg",
+      caption: "Hands-on adventure with teamwork and trust"
+    },
+    {
+      title: "Rappelling turns fear into focus",
+      description: "Controlled vertical activities help children experience courage through step-by-step guidance.",
+      image: "/content/junior-explorers/field-moments/rappelling.jpg",
+      caption: "Confidence grows fastest when challenge is guided well"
+    },
+    {
+      title: "Star gazing creates wonder",
+      description: "Night sessions make the outdoors feel magical while teaching patience, observation, and curiosity.",
+      image: "/content/junior-explorers/field-moments/star-gazing.jpg",
+      caption: "Outdoor nights that children remember for years"
+    },
+    {
+      title: "Traditional games keep culture alive",
+      description: "Old Indian games bring movement, laughter, and a shared sense of simple joy into camp life.",
+      image: "/content/junior-explorers/field-moments/old-indian-games.jpg",
+      caption: "Community energy beyond screens and routine"
+    },
+    {
+      title: "Tent life teaches practical comfort",
+      description: "Camp routines help children adjust, organize themselves, and enjoy simplicity without complaint.",
+      image: "/content/junior-explorers/field-moments/tent-evening.jpg",
+      caption: "Comfort in nature, not comfort away from it"
+    }
+  ] satisfies JuniorExplorerMoment[],
   quote:
     "Important life lessons are not learned only from books. They become real through practical outdoor experience, discipline, and observation.",
   safetyItems: [
@@ -160,5 +198,32 @@ export const juniorExplorersContent = {
     { month: "Summer", name: "Rajgad Adventure Camp" },
     { month: "Summer", name: "Torna Adventure Camp" },
     { month: "Summer", name: "Naneghat Adventure Camp" }
-  ] satisfies JuniorExplorerScheduleItem[]
+  ] satisfies JuniorExplorerScheduleItem[],
+  summerCampSpotlight: {
+    title: "Summer camp should feel like a real mountain memory, not just a school break.",
+    description:
+      "The Manali Adventure Camp set adds a more aspirational layer to Junior Explorers. It shows how our seasonal camp language can grow from local exposure into bigger mountain-based journeys with activity, bonding, and disciplined fun.",
+    heroImage: "/content/junior-explorers/summer-camp/manali-hero.jpg",
+    heroCaption: "Summer camps that feel like a real expedition",
+    cards: [
+      {
+        title: "Team movement in the mountains",
+        description: "Campers experience togetherness, altitude, and outdoor structure in one journey.",
+        image: "/content/junior-explorers/summer-camp/manali-team.jpg",
+        caption: "Children remember the people as much as the place"
+      },
+      {
+        title: "Activity-led confidence building",
+        description: "Adventure tasks, movement, and open-air experiences turn vacation time into growth time.",
+        image: "/content/junior-explorers/summer-camp/manali-activity.jpg",
+        caption: "Energy, movement, and challenge in the right setting"
+      },
+      {
+        title: "Camp atmosphere after the day slows down",
+        description: "The evening rhythm of camp creates bonding, reflection, and the feeling of a real outdoor journey.",
+        image: "/content/junior-explorers/summer-camp/manali-campfire.jpg",
+        caption: "A season children carry back home with them"
+      }
+    ] satisfies JuniorExplorerSummerCampCard[]
+  }
 };

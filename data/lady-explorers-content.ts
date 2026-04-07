@@ -13,10 +13,7 @@ export interface LadyExplorerRhythm {
   caption: string;
 }
 
-const heroImage =
-  trips[4]?.heroImage ??
-  trips[0]?.heroImage ??
-  "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1400&q=80";
+const heroImage = "/content/lady-explorers/women-day-event.png";
 const supportImage =
   trips[3]?.heroImage ??
   "https://images.unsplash.com/photo-1533134486753-c833f0ed4866?auto=format&fit=crop&w=1400&q=80";

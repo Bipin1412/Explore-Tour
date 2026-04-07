@@ -128,8 +128,7 @@ export const trips: Trip[] = [
     price: 3199,
     heroVideo:
       "https://cdn.pixabay.com/video/2018/10/11/18656-294879015_large.mp4",
-    heroImage:
-      "https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&w=1400&q=80",
+    heroImage: "/content/trips/harishchandragad.png",
     gallery: [
       "https://images.unsplash.com/photo-1472396961693-142e6e269027?auto=format&fit=crop&w=1200&q=80",
       "https://images.unsplash.com/photo-1482192596544-9eb780fc7f66?auto=format&fit=crop&w=1200&q=80",

@@ -5,6 +5,7 @@ import {
   juniorExplorersContent,
   JuniorExplorerBenefit,
   JuniorExplorerLearningCard,
+  JuniorExplorerMoment,
   JuniorExplorerScheduleItem
 } from "@/data/junior-explorers-content";
 
@@ -201,6 +202,26 @@ export default function JuniorExplorersPage() {
       </section>
 
       <section className="section-shell">
+        <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+          <div>
+            <p className="section-tag">Field Moments</p>
+            <h2 className="mt-4 font-display text-4xl text-[#112315] sm:text-5xl">
+              The page now shows what the program actually feels like on the ground.
+            </h2>
+          </div>
+          <p className="max-w-3xl text-sm leading-8 text-[#566055] sm:text-base">
+            These moments from the kids camp archive make the Junior Explorers page feel more true to the experience: trekking, ropes, rappelling, tent life, night sky, and shared camp culture.
+          </p>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+          {content.fieldMoments.map((moment) => (
+            <MomentCard key={moment.title} moment={moment} />
+          ))}
+        </div>
+      </section>
+
+      <section className="section-shell">
         <div className="overflow-hidden rounded-[2.6rem] border border-[#d7c8b2] bg-[#f3e6d5] p-7 text-[#162214] shadow-[0_30px_90px_rgba(16,27,17,0.12)] sm:p-10">
           <div className="grid gap-8 xl:grid-cols-[1.05fr_0.95fr]">
             <div>
@@ -255,6 +276,55 @@ export default function JuniorExplorersPage() {
                 <p className="mt-5 text-sm leading-7 text-[#445042]">{content.parentMessage}</p>
               </article>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section-shell">
+        <div className="grid gap-6 xl:grid-cols-[0.96fr_1.04fr]">
+          <article className="relative overflow-hidden rounded-[2.2rem] border border-[#d7ccbd] shadow-[0_30px_90px_rgba(19,24,17,0.08)]">
+            <div className="relative h-full min-h-[380px]">
+              <Image
+                src={content.summerCampSpotlight.heroImage}
+                alt="Junior Explorers summer camp spotlight"
+                fill
+                sizes="(max-width: 1280px) 100vw, 40vw"
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(9,19,12,0.08),rgba(9,19,12,0.82))]" />
+              <div className="absolute inset-x-5 bottom-5 rounded-[1.6rem] border border-white/10 bg-black/25 p-5 text-[#f4ede3] backdrop-blur">
+                <p className="text-[11px] uppercase tracking-[0.18em] text-[#efcfac]">Summer Camp Spotlight</p>
+                <p className="mt-3 font-display text-3xl leading-tight">
+                  {content.summerCampSpotlight.title}
+                </p>
+                <p className="mt-3 text-sm leading-7 text-[#d7dfd3]">
+                  {content.summerCampSpotlight.description}
+                </p>
+                <p className="mt-4 text-[11px] uppercase tracking-[0.18em] text-[#f1dfc7]">
+                  Micro Caption: {content.summerCampSpotlight.heroCaption}
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <div className="space-y-5">
+            <div>
+              <p className="section-tag">Seasonal Camp Visuals</p>
+              <h2 className="mt-4 font-display text-4xl text-[#112315] sm:text-5xl">
+                Manali camp imagery now gives the summer section a bigger adventure horizon.
+              </h2>
+            </div>
+            <div className="grid gap-4 sm:grid-cols-3">
+              {content.summerCampSpotlight.cards.map((card) => (
+                <SummerCampCard key={card.title} card={card} />
+              ))}
+            </div>
+            <article className="rounded-[2rem] border border-[#d5cab9] bg-[#fff8ef] p-6 shadow-[0_18px_60px_rgba(19,24,17,0.07)]">
+              <p className="section-tag">Why This Matters</p>
+              <p className="mt-5 text-sm leading-8 text-[#535b50]">
+                The summer-camp section can now grow naturally into a future dedicated seasonal camp page without needing another redesign. The visual language already supports that next step.
+              </p>
+            </article>
           </div>
         </div>
       </section>
@@ -350,6 +420,63 @@ function LearningCard({ card }: { card: JuniorExplorerLearningCard }) {
       <p className="text-[11px] uppercase tracking-[0.18em] text-[#8a5c35]">Field Lesson</p>
       <h3 className="mt-3 font-display text-2xl text-[#162214]">{card.title}</h3>
       <p className="mt-3 text-sm leading-7 text-[#555c51]">{card.description}</p>
+    </article>
+  );
+}
+
+function MomentCard({ moment }: { moment: JuniorExplorerMoment }) {
+  return (
+    <article className="group overflow-hidden rounded-[1.8rem] border border-[#d6cdbe] bg-[#f8f1e7] shadow-[0_20px_60px_rgba(31,38,26,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_28px_80px_rgba(31,38,26,0.14)]">
+      <div className="relative h-72 overflow-hidden">
+        <Image
+          src={moment.image}
+          alt={moment.title}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 20vw"
+          className="object-cover transition duration-700 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+        <p className="absolute bottom-4 left-4 rounded-full bg-black/35 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-[#f2dcc2]">
+          {moment.caption}
+        </p>
+      </div>
+      <div className="space-y-3 p-5">
+        <h3 className="font-display text-2xl text-[#162617]">{moment.title}</h3>
+        <p className="text-sm leading-7 text-[#5b5e54]">{moment.description}</p>
+      </div>
+    </article>
+  );
+}
+
+function SummerCampCard({
+  card
+}: {
+  card: {
+    title: string;
+    description: string;
+    image: string;
+    caption: string;
+  };
+}) {
+  return (
+    <article className="group overflow-hidden rounded-[1.8rem] border border-[#d6cdbe] bg-[#f8f1e7] shadow-[0_20px_60px_rgba(31,38,26,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_28px_80px_rgba(31,38,26,0.14)]">
+      <div className="relative h-60 overflow-hidden">
+        <Image
+          src={card.image}
+          alt={card.title}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
+          className="object-cover transition duration-700 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+        <p className="absolute bottom-4 left-4 rounded-full bg-black/35 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-[#f2dcc2]">
+          {card.caption}
+        </p>
+      </div>
+      <div className="space-y-3 p-5">
+        <h3 className="font-display text-2xl text-[#162617]">{card.title}</h3>
+        <p className="text-sm leading-7 text-[#5b5e54]">{card.description}</p>
+      </div>
     </article>
   );
 }

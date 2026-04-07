@@ -44,6 +44,8 @@ const himalayaImage = trips[3]?.heroImage ?? sahyadriImage;
 const coastalImage = trips[8]?.heroImage ?? sahyadriImage;
 const forestImage = trips[6]?.heroImage ?? sahyadriImage;
 const valleyImage = trips[5]?.heroImage ?? sahyadriImage;
+const konkanTourImage = "/content/tours/konkan-tour.png";
+const konkanSupportImage = "/content/tours/konkan-tour-2.png";
 
 export const teamExplorersPage: LandingPageContent = {
   eyebrow: "Team Explorers",
@@ -210,7 +212,7 @@ export const upcomingToursPage: LandingPageContent = {
   title: "Domestic and international journeys collected into one premium planning page.",
   description:
     "Upcoming Tours is the softer-travel counterpart to the trek board. It pulls together coast, desert, culture, family travel, and international routes into a calmer decision space.",
-  image: coastalImage,
+  image: konkanTourImage,
   caption: "Tour-led travel with stronger comfort and slower pacing",
   actions: [
     { label: "Open International Tours", href: "/international-tours" },
@@ -253,7 +255,7 @@ export const upcomingToursPage: LandingPageContent = {
       title: "International Tours",
       description: "Open the full destination grid for Nepal, Sri Lanka, Thailand, Bali, Maldives, and more.",
       href: "/international-tours",
-      image: coastalImage,
+      image: konkanTourImage,
       caption: "Destination-led travel pages",
       meta: "International"
     },
@@ -261,7 +263,7 @@ export const upcomingToursPage: LandingPageContent = {
       title: "Camping Escapes",
       description: "A lighter adventure route for lakeside, beach, and mountain-edge camp experiences.",
       href: "/camping",
-      image: coastalImage,
+      image: konkanSupportImage,
       caption: "Camp-led getaways",
       meta: "Domestic"
     },
