@@ -126,8 +126,8 @@ export default function UpcomingHighlightsCarousel({
   };
 
   return (
-    <div className="relative overflow-hidden rounded-[2.4rem] bg-[radial-gradient(circle_at_top_center,rgba(196,225,239,0.34),transparent_42%),linear-gradient(180deg,#fbfdff_0%,#f2f8fb_100%)] px-4 py-8 sm:px-6 sm:py-10">
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[radial-gradient(circle_at_center,rgba(137,185,213,0.2),transparent_68%)]" />
+    <div className="relative overflow-hidden rounded-[2.4rem] bg-[radial-gradient(circle_at_top_center,rgba(240,220,193,0.34),transparent_42%),linear-gradient(180deg,#fffaf3_0%,#f7ecdc_100%)] px-4 py-8 sm:px-6 sm:py-10">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[radial-gradient(circle_at_center,rgba(196,109,44,0.16),transparent_68%)]" />
 
       <div
         onMouseDown={handleMouseDown}
@@ -148,7 +148,7 @@ export default function UpcomingHighlightsCarousel({
               style={getCardStyle(offset)}
               className="upcoming-tilt-card absolute left-1/2 top-3 block"
             >
-              <div className="relative overflow-hidden rounded-[1.25rem] shadow-[0_18px_34px_rgba(44,81,103,0.14)]">
+              <div className="relative overflow-hidden rounded-[1.25rem] shadow-[0_18px_34px_rgba(97,68,39,0.14)]">
                 <div className="relative" style={{ height: `${imageHeight}px` }}>
                   <Image
                     src={item.image}
@@ -157,7 +157,7 @@ export default function UpcomingHighlightsCarousel({
                     sizes="(max-width: 768px) 50vw, 220px"
                     className="object-cover"
                   />
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(9,15,19,0.02)_35%,rgba(9,15,19,0.14)_58%,rgba(9,15,19,0.72)_100%)]" />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(44,34,24,0.02)_35%,rgba(44,34,24,0.14)_58%,rgba(44,34,24,0.72)_100%)]" />
 
                   <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
                     <div className="rounded-[1rem] bg-black/12 px-3 py-3 backdrop-blur-[2px]">
@@ -186,8 +186,8 @@ export default function UpcomingHighlightsCarousel({
             onClick={() => setActiveIndex(index)}
             className={`h-2.5 w-2.5 rounded-full border transition ${
               index === activeIndex
-                ? "border-[#11639b] bg-[#11639b]"
-                : "border-[#b5bec5] bg-transparent"
+                ? "border-[#c46d2c] bg-[#c46d2c]"
+                : "border-[#d9c8b2] bg-transparent"
             }`}
             aria-label={`Go to highlight ${index + 1}`}
           />

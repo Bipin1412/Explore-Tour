@@ -17,7 +17,7 @@ export default function WhyExplorers() {
     <section id="why-explorers" className="section-shell">
       <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:items-center">
         <div className="relative min-h-[460px]">
-          <div className="absolute left-0 top-0 h-[70%] w-[72%] overflow-hidden rounded-[2.4rem] bg-white p-3 shadow-[0_26px_70px_rgba(61,102,121,0.12)]">
+          <div className="absolute left-0 top-0 h-[70%] w-[72%] overflow-hidden rounded-[2.4rem] bg-white p-3 shadow-[0_26px_70px_rgba(97,68,39,0.12)]">
             <div className="relative h-full overflow-hidden rounded-[1.8rem]">
               <Image
                 src={showcaseImages[0]}
@@ -29,7 +29,7 @@ export default function WhyExplorers() {
             </div>
           </div>
 
-          <div className="absolute bottom-0 right-0 h-[52%] w-[48%] overflow-hidden rounded-[2.2rem] bg-white p-3 shadow-[0_26px_70px_rgba(61,102,121,0.12)]">
+          <div className="absolute bottom-0 right-0 h-[52%] w-[48%] overflow-hidden rounded-[2.2rem] bg-white p-3 shadow-[0_26px_70px_rgba(97,68,39,0.12)]">
             <div className="relative h-full overflow-hidden rounded-[1.7rem]">
               <Image
                 src={showcaseImages[1]}
@@ -41,18 +41,18 @@ export default function WhyExplorers() {
             </div>
           </div>
 
-          <div className="absolute left-[10%] top-[60%] rounded-[1.8rem] bg-[#0f3550] px-5 py-4 text-white shadow-[0_24px_60px_rgba(17,99,155,0.28)]">
-            <p className="text-xs uppercase tracking-[0.2em] text-[#bde3f2]">Why people return</p>
+          <div className="absolute left-[10%] top-[60%] rounded-[1.8rem] bg-[#4a3424] px-5 py-4 text-white shadow-[0_24px_60px_rgba(97,68,39,0.28)]">
+            <p className="text-xs uppercase tracking-[0.2em] text-[#f5ddc5]">Why people return</p>
             <p className="mt-2 text-lg font-semibold">Warm community, strong execution</p>
           </div>
         </div>
 
         <div>
           <p className="section-tag">Why Explorers</p>
-          <h2 className="mt-4 font-display text-4xl text-[#0b1215] sm:text-5xl">
+          <h2 className="mt-4 font-display text-4xl text-[#2c2218] sm:text-5xl">
             Built like a premium travel brand, backed by disciplined on-ground teams.
           </h2>
-          <p className="mt-5 max-w-2xl text-base leading-8 text-[#4f6670]">
+          <p className="mt-5 max-w-2xl text-base leading-8 text-[#6e5a43]">
             Explorers Group brings together the romance of the outdoors and the precision of a
             seasoned operations team. Every departure is meant to feel immersive, safe,
             energizing, and deeply memorable whether it is a first trek, a school camp, or a
@@ -63,12 +63,12 @@ export default function WhyExplorers() {
             {highlights.map((item) => (
               <div
                 key={item}
-                className="rounded-[1.8rem] bg-white px-5 py-5 shadow-[0_18px_40px_rgba(61,102,121,0.08)] ring-1 ring-[#d8e8ef]"
+                className="rounded-[1.8rem] bg-white px-5 py-5 shadow-[0_18px_40px_rgba(97,68,39,0.08)] ring-1 ring-[#e4d2bc]"
               >
-                <div className="mb-4 h-11 w-11 rounded-full bg-[#e7f2f8] text-center text-xl leading-[2.75rem] text-[#11639b]">
+                <div className="mb-4 h-11 w-11 rounded-full bg-[#f4e3d1] text-center text-xl leading-[2.75rem] text-[#c46d2c]">
                   +
                 </div>
-                <p className="text-sm leading-7 text-[#4f6670]">{item}</p>
+                <p className="text-sm leading-7 text-[#6e5a43]">{item}</p>
               </div>
             ))}
           </div>

@@ -25,7 +25,7 @@ export default function SiteHeader() {
     <header
       className={`sticky top-0 z-50 overflow-visible backdrop-blur-2xl transition ${
         isHome
-          ? "border-b border-[#cfe3ee]/70 bg-[rgba(247,252,254,0.82)]"
+          ? "border-b border-[#e2d1bc]/70 bg-[rgba(251,244,232,0.88)]"
           : "border-b border-white/10 bg-[rgba(10,23,14,0.82)]"
       }`}
     >
@@ -52,7 +52,7 @@ export default function SiteHeader() {
                 href={item.href}
                 className={`inline-flex whitespace-nowrap items-center gap-1.5 rounded-full px-2.5 py-2 text-[13px] font-medium transition 2xl:gap-2 2xl:px-3 2xl:text-sm ${
                   isHome
-                    ? "text-[#334952] hover:bg-[#e8f3f8]"
+                    ? "text-[#4d3726] hover:bg-[#f6e8d8]"
                     : "text-[#efe5d9] hover:bg-white/[0.05]"
                 }`}
               >
@@ -60,7 +60,7 @@ export default function SiteHeader() {
                 {item.groups?.length ? (
                   <span
                     className={`text-[10px] uppercase tracking-[0.2em] ${
-                      isHome ? "text-[#11639b]" : "text-[#d89b5a]"
+                      isHome ? "text-[#c46d2c]" : "text-[#d89b5a]"
                     }`}
                   >
                     +
@@ -78,7 +78,7 @@ export default function SiteHeader() {
             href={`https://wa.me/${paymentInfo.whatsappNumber.replace(/[^\d]/g, "")}`}
             className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition ${
               isHome
-                ? "border border-[#c7dde8] text-[#334952] hover:bg-[#e8f3f8]"
+                ? "border border-[#e0d1bc] text-[#4d3726] hover:bg-[#f6e8d8]"
                 : "border border-[#d37a31]/50 text-[#f7f0e8] hover:bg-[#d37a31]/10"
             }`}
           >
@@ -89,7 +89,7 @@ export default function SiteHeader() {
             href={contactItem.href}
             className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold text-white transition ${
               isHome
-                ? "bg-[#11639b] hover:bg-[#2f7eb5]"
+                ? "bg-[#c46d2c] hover:bg-[#8e5324]"
                 : "bg-[#d37a31] hover:bg-[#e08a45]"
             }`}
           >
@@ -103,7 +103,7 @@ export default function SiteHeader() {
           onClick={() => setMobileOpen((prev) => !prev)}
           className={`inline-flex h-11 w-11 items-center justify-center rounded-full 2xl:hidden ${
             isHome
-              ? "border border-[#cfe3ee] bg-white/80 text-[#334952]"
+              ? "border border-[#e2d1bc] bg-white/80 text-[#4d3726]"
               : "border border-white/10 bg-white/[0.04] text-[#f4ece2]"
           }`}
           aria-label="Open navigation"
@@ -116,7 +116,7 @@ export default function SiteHeader() {
         <div
           className={`px-4 pb-5 pt-4 2xl:hidden ${
             isHome
-              ? "border-t border-[#cfe3ee] bg-[rgba(247,252,254,0.96)]"
+              ? "border-t border-[#e2d1bc] bg-[rgba(251,244,232,0.98)]"
               : "border-t border-white/10 bg-[rgba(10,23,14,0.96)]"
           }`}
         >

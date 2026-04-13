@@ -128,17 +128,17 @@ export default function FeaturedProgramsGrid({ programs }: FeaturedProgramsGridP
       <div className="mb-10 flex flex-col gap-5 xl:flex-row xl:items-start xl:justify-between">
         <div className="max-w-[28rem]">
           <p className="section-tag">Featured Programs</p>
-          <h2 className="mt-4 max-w-[10ch] font-display text-4xl leading-[0.92] text-[#0b1215] sm:text-5xl lg:text-[3.6rem]">
+          <h2 className="mt-4 max-w-[10ch] font-display text-4xl leading-[0.92] text-[#2c2218] sm:text-5xl lg:text-[3.6rem]">
             Programs shaped for every explorer profile.
           </h2>
         </div>
-        <p className="max-w-[34rem] pt-2 text-sm leading-8 text-[#617983] sm:text-base">
+        <p className="max-w-[34rem] pt-2 text-sm leading-8 text-[#6e5a43] sm:text-base">
           Weekend escapes, camps, wildlife circuits, women-focused communities, mountain
           conditioning, and curated domestic or international journeys.
         </p>
       </div>
 
-      <div className="overflow-hidden rounded-[2.4rem] bg-[radial-gradient(circle_at_top_center,rgba(201,224,237,0.28),transparent_52%)] px-2 py-6 sm:px-4 sm:py-8">
+      <div className="overflow-hidden rounded-[2.4rem] bg-[radial-gradient(circle_at_top_center,rgba(240,220,193,0.42),transparent_52%)] px-2 py-6 sm:px-4 sm:py-8">
         <div
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
@@ -163,9 +163,9 @@ export default function FeaturedProgramsGrid({ programs }: FeaturedProgramsGridP
                 }}
                 onMouseLeave={() => setIsCenterHovered(false)}
               >
-                <div className="relative h-full w-full overflow-hidden rounded-[28px] bg-[#dce8ef] shadow-[0_24px_60px_rgba(33,58,72,0.18)]">
+                <div className="relative h-full w-full overflow-hidden rounded-[28px] bg-[#f2e2d1] shadow-[0_24px_60px_rgba(97,68,39,0.18)]">
                   <img src={program.image} alt={program.title} className="h-full w-full object-cover" />
-                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(6,14,18,0.04)_22%,rgba(6,14,18,0.18)_42%,rgba(6,14,18,0.88)_78%,rgba(6,14,18,0.96)_100%)]" />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(44,34,24,0.04)_22%,rgba(44,34,24,0.18)_42%,rgba(44,34,24,0.88)_78%,rgba(44,34,24,0.96)_100%)]" />
 
                   {isCenter ? (
                     <>
@@ -184,7 +184,7 @@ export default function FeaturedProgramsGrid({ programs }: FeaturedProgramsGridP
                                 href={program.href ?? "/#featured-programs"}
                                 className="inline-flex shrink-0 items-center rounded-full bg-white/22 px-5 py-3 text-base font-medium text-white shadow-[0_10px_28px_rgba(0,0,0,0.18)] backdrop-blur-md"
                               >
-                                View All →
+                                View All {"->"}
                               </Link>
                             </div>
                           </div>
@@ -226,7 +226,7 @@ export default function FeaturedProgramsGrid({ programs }: FeaturedProgramsGridP
               type="button"
               onClick={() => setActiveIndex(index)}
               className={`h-2.5 rounded-full transition-all ${
-                index === activeIndex ? "w-12 bg-[#11639b]" : "w-6 bg-[#c7dce7]"
+                index === activeIndex ? "w-12 bg-[#c46d2c]" : "w-6 bg-[#ead9c4]"
               }`}
               aria-label={`Go to featured program ${index + 1}`}
             />

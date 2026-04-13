@@ -14,13 +14,13 @@ export default function BrandLogo({
 }: BrandLogoProps) {
   const imageWrapperClassName =
     size === "header"
-      ? "w-[150px] rounded-[1rem] border border-[#d5e6ee] bg-white px-3 py-2 shadow-[0_14px_34px_rgba(61,102,121,0.1)] sm:w-[180px]"
-      : "w-[170px] rounded-[1.1rem] border border-[#d5e6ee] bg-white px-3 py-2 shadow-[0_14px_34px_rgba(61,102,121,0.12)] sm:w-[210px]";
+      ? "w-[150px] rounded-[1rem] border border-[#e2d1bc] bg-white px-3 py-2 shadow-[0_14px_34px_rgba(97,68,39,0.1)] sm:w-[180px]"
+      : "w-[170px] rounded-[1.1rem] border border-[#e2d1bc] bg-white px-3 py-2 shadow-[0_14px_34px_rgba(97,68,39,0.12)] sm:w-[210px]";
 
   const taglineClassName =
     size === "header"
-      ? "hidden text-[10px] uppercase tracking-[0.24em] text-[#6e8994] sm:block sm:tracking-[0.34em]"
-      : "text-[10px] uppercase tracking-[0.24em] text-[#6e8994] sm:tracking-[0.3em]";
+      ? "hidden text-[10px] uppercase tracking-[0.24em] text-[#8b775f] sm:block sm:tracking-[0.34em]"
+      : "text-[10px] uppercase tracking-[0.24em] text-[#8b775f] sm:tracking-[0.3em]";
 
   return (
     <Link href={href} className="inline-flex min-w-0 flex-col gap-2">

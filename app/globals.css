@@ -11,7 +11,7 @@
   --forest: #0b1215;
   --forest-soft: #334952;
   --earth: #a16e4a;
-  --accent: #11639b;
+  --accent: #c46d2c;
   --line: rgba(11, 18, 21, 0.08);
   --panel-bg: rgba(11, 18, 21, 0.72);
   --panel-border: rgba(255, 255, 255, 0.16);
@@ -39,6 +39,22 @@ body {
   color: var(--ink);
   font-family: var(--font-body), sans-serif;
   overflow-x: hidden;
+}
+
+main.home-page {
+  isolation: isolate;
+}
+
+main.home-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255, 247, 234, 0.92), transparent 30%),
+    radial-gradient(circle at 82% 16%, rgba(196, 109, 44, 0.14), transparent 28%),
+    radial-gradient(circle at 70% 70%, rgba(111, 123, 74, 0.12), transparent 30%);
 }
 
 body::before {
@@ -107,7 +123,7 @@ a {
   font-weight: 700;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: #11639b;
+  color: #c46d2c;
 }
 
 .section-tag::before {
@@ -137,9 +153,9 @@ a {
 }
 
 .hero-cta-primary {
-  background: linear-gradient(135deg, #11639b, #2e7eb6);
+  background: linear-gradient(135deg, #c46d2c, #8e5324);
   color: white;
-  box-shadow: 0 18px 38px rgba(17, 99, 155, 0.26);
+  box-shadow: 0 18px 38px rgba(196, 109, 44, 0.26);
 }
 
 .hero-cta-primary:hover,

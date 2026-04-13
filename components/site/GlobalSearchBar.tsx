@@ -66,14 +66,14 @@ export default function GlobalSearchBar({ compact = false }: GlobalSearchBarProp
             compact ? "sm:min-w-[220px]" : ""
           } ${
             isHome
-              ? "border border-[#d2e5ee] bg-white text-[#334952] placeholder:text-[#7e97a3] focus:border-[#80b6d4]"
+              ? "border border-[#dfccb3] bg-white text-[#4d3726] placeholder:text-[#8b775f] focus:border-[#c46d2c]"
               : "border border-white/15 bg-[rgba(245,241,231,0.12)] text-[#f6f0e6] placeholder:text-[#c9c0b5] focus:border-[#f0b36d]/65 focus:bg-[rgba(245,241,231,0.18)]"
           }`}
         />
         <button
           type="submit"
           className={`absolute right-1.5 top-1.5 inline-flex h-9 items-center justify-center rounded-full px-4 text-xs font-semibold uppercase tracking-[0.18em] text-white transition ${
-            isHome ? "bg-[#11639b] hover:bg-[#2f7eb5]" : "bg-[#d37a31] hover:bg-[#eb8d41]"
+            isHome ? "bg-[#c46d2c] hover:bg-[#8e5324]" : "bg-[#d37a31] hover:bg-[#eb8d41]"
           }`}
         >
           Go
@@ -84,7 +84,7 @@ export default function GlobalSearchBar({ compact = false }: GlobalSearchBarProp
         <div
           className={`absolute left-0 right-0 top-[calc(100%+0.65rem)] z-50 max-w-full overflow-hidden rounded-3xl p-2 shadow-[0_28px_70px_rgba(0,0,0,0.18)] backdrop-blur-xl ${
             isHome
-              ? "border border-[#d8e8ef] bg-white/96"
+              ? "border border-[#e4d2bc] bg-white/96"
               : "border border-white/10 bg-[#102114]/95"
           }`}
         >
@@ -94,18 +94,18 @@ export default function GlobalSearchBar({ compact = false }: GlobalSearchBarProp
               href={`/tours/${trip.slug}`}
               onClick={() => setIsOpen(false)}
               className={`flex items-center justify-between rounded-2xl px-4 py-3 text-sm transition ${
-                isHome ? "text-[#334952] hover:bg-[#f3f9fc]" : "text-[#ecdfcf] hover:bg-white/5"
+                isHome ? "text-[#4d3726] hover:bg-[#fbf1e4]" : "text-[#ecdfcf] hover:bg-white/5"
               }`}
             >
               <span>
-                <span className={`block font-semibold ${isHome ? "text-[#0b1215]" : "text-white"}`}>
+                <span className={`block font-semibold ${isHome ? "text-[#2c2218]" : "text-white"}`}>
                   {trip.name}
                 </span>
-                <span className={`block text-xs ${isHome ? "text-[#6f8792]" : "text-[#a9b49e]"}`}>
+                <span className={`block text-xs ${isHome ? "text-[#7f694f]" : "text-[#a9b49e]"}`}>
                   {trip.region} | {trip.destination}
                 </span>
               </span>
-              <span className={`text-[11px] uppercase tracking-[0.16em] ${isHome ? "text-[#11639b]" : "text-[#d37a31]"}`}>
+              <span className={`text-[11px] uppercase tracking-[0.16em] ${isHome ? "text-[#c46d2c]" : "text-[#d37a31]"}`}>
                 Open
               </span>
             </Link>

@@ -23,11 +23,11 @@ export default function StatsBar() {
         {stats.map((item) => (
           <div
             key={item.label}
-            className="rounded-[2rem] bg-white px-6 py-6 shadow-[0_22px_55px_rgba(61,102,121,0.08)] ring-1 ring-[#d7e7ef]"
+            className="rounded-[2rem] bg-[#fffaf3] px-6 py-6 shadow-[0_22px_55px_rgba(97,68,39,0.08)] ring-1 ring-[#e4d2bc]"
           >
-            <p className="text-sm uppercase tracking-[0.2em] text-[#11639b]">{item.label}</p>
-            <p className="mt-4 font-display text-4xl text-[#0b1215]">{item.value}</p>
-            <p className="mt-3 text-sm leading-7 text-[#4f6670]">{item.detail}</p>
+            <p className="text-sm uppercase tracking-[0.2em] text-[#c46d2c]">{item.label}</p>
+            <p className="mt-4 font-display text-4xl text-[#2c2218]">{item.value}</p>
+            <p className="mt-3 text-sm leading-7 text-[#6e5a43]">{item.detail}</p>
           </div>
         ))}
       </div>
