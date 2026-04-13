@@ -1,16 +1,33 @@
 export default function StatsBar() {
   const stats = [
-    "2 Lakh+ Happy Members",
-    "4.6 Star Trust across Google, TripAdvisor, and Facebook",
-    "Adventure, Travel, Training programs for all age groups"
+    {
+      value: "2 Lakh+",
+      label: "Happy members",
+      detail: "Families, trekkers, schools, and communities."
+    },
+    {
+      value: "4.6 Star",
+      label: "Community trust",
+      detail: "Across Google, TripAdvisor, and Facebook."
+    },
+    {
+      value: "All Ages",
+      label: "Adventure, travel, training",
+      detail: "Programs designed for every explorer profile."
+    }
   ];
 
   return (
     <section className="section-shell pt-0">
-      <div className="grid gap-3 rounded-[2rem] border border-[#c9c1b0] bg-[#f2eadf] p-5 md:grid-cols-3 md:p-6">
+      <div className="grid gap-4 md:grid-cols-3">
         {stats.map((item) => (
-          <div key={item} className="rounded-[1.5rem] border border-[#d7cfbf] bg-[#f7f1e8] px-4 py-4 text-center text-sm font-semibold text-[#223224] sm:text-base">
-            {item}
+          <div
+            key={item.label}
+            className="rounded-[2rem] bg-white px-6 py-6 shadow-[0_22px_55px_rgba(61,102,121,0.08)] ring-1 ring-[#d7e7ef]"
+          >
+            <p className="text-sm uppercase tracking-[0.2em] text-[#11639b]">{item.label}</p>
+            <p className="mt-4 font-display text-4xl text-[#0b1215]">{item.value}</p>
+            <p className="mt-3 text-sm leading-7 text-[#4f6670]">{item.detail}</p>
           </div>
         ))}
       </div>

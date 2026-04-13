@@ -7,6 +7,7 @@ import QuickLinksSection from "@/components/sections/QuickLinksSection";
 import SocialEmbeds from "@/components/sections/SocialEmbeds";
 import StatsBar from "@/components/sections/StatsBar";
 import TestimonialsTabs from "@/components/sections/TestimonialsTabs";
+import UpcomingHighlightsCarousel from "@/components/sections/UpcomingHighlightsCarousel";
 import WhyExplorers from "@/components/sections/WhyExplorers";
 import { footerQuickLinks, primaryAccessLinks } from "@/data/navigation";
 import { getBatchWindow } from "@/lib/program-content";
@@ -26,6 +27,11 @@ const fallbackHeroSlide = trips[0]
 
 const allHeroSlides =
   heroSlides.length === 4 && fallbackHeroSlide ? [...heroSlides, fallbackHeroSlide] : heroSlides;
+
+const upcomingHighlights = [
+  ...featuredTrips,
+  ...trips.filter((trip) => !featuredTrips.some((featuredTrip) => featuredTrip.slug === trip.slug))
+].slice(0, 5);
 
 const featuredPrograms = [
   {
@@ -116,25 +122,29 @@ const featuredPrograms = [
 
 export default function HomePage() {
   return (
-    <main className="pb-16">
+    <main className="pb-20">
       <HeroPanorama slides={allHeroSlides} />
       <WhyExplorers />
       <StatsBar />
 
-      <section className="section-shell pt-0">
-        <div className="grid gap-4 lg:grid-cols-3">
-          {primaryAccessLinks.map((item) => (
-            <Link
-              key={item.title}
-              href={item.href}
-              className="rounded-[1.8rem] border border-[#d9cfbf] bg-[#f7efe4] p-5 shadow-[0_24px_70px_rgba(31,38,26,0.08)] transition hover:-translate-y-1 hover:shadow-[0_30px_90px_rgba(31,38,26,0.12)]"
-            >
-              <p className="section-tag">Easy Access</p>
-              <h2 className="mt-4 font-display text-3xl text-[#112315]">{item.title}</h2>
-              <p className="mt-3 text-sm leading-7 text-[#565c51]">{item.description}</p>
-              <p className="mt-4 text-sm font-semibold text-[#8a5c35]">Open now</p>
-            </Link>
-          ))}
+      <section className="section-shell pt-8">
+        <div className="overflow-hidden rounded-[2.8rem] bg-white shadow-[0_26px_70px_rgba(61,102,121,0.08)] ring-1 ring-[#d7e7ef]">
+          <div className="grid gap-0 lg:grid-cols-3">
+            {primaryAccessLinks.map((item) => (
+              <Link
+                key={item.title}
+                href={item.href}
+                className="group p-6 transition hover:bg-[#f8fcfd] lg:p-8 lg:[&:not(:first-child)]:border-l lg:[&:not(:first-child)]:border-[#dbeaf1]"
+              >
+                <p className="section-tag">Easy Access</p>
+                <h2 className="mt-4 font-display text-3xl text-[#0b1215]">{item.title}</h2>
+                <p className="mt-3 max-w-sm text-sm leading-7 text-[#4f6670]">{item.description}</p>
+                <p className="mt-5 text-sm font-semibold text-[#11639b] transition group-hover:text-[#2f7eb5]">
+                  Open now
+                </p>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
@@ -145,21 +155,21 @@ export default function HomePage() {
         <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="section-tag">Upcoming Treks</p>
-            <h2 className="mt-4 font-display text-4xl text-[#112315] sm:text-5xl">
+            <h2 className="mt-4 font-display text-4xl text-[#0b1215] sm:text-5xl">
               Browse the trek board directly from the home page.
             </h2>
           </div>
           <Link
             href="/trips"
-            className="inline-flex items-center rounded-full bg-[#d37a31] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#e38940]"
+            className="inline-flex items-center rounded-full bg-[#11639b] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#2f7eb5]"
           >
             View All Trek Listings
           </Link>
         </div>
 
-        <div className="hidden overflow-hidden rounded-[2rem] border border-[#d8cfbf] bg-[#f8f1e6] shadow-[0_24px_70px_rgba(30,36,27,0.08)] lg:block">
+        <div className="hidden overflow-hidden rounded-[2.8rem] bg-white shadow-[0_24px_70px_rgba(61,102,121,0.08)] ring-1 ring-[#d7e7ef] lg:block">
           <table className="w-full border-collapse">
-            <thead className="bg-[#182a1a] text-left text-xs uppercase tracking-[0.18em] text-[#efe5d8]">
+            <thead className="bg-[#0f3550] text-left text-xs uppercase tracking-[0.18em] text-[#eaf7fc]">
               <tr>
                 <th className="px-5 py-4">Date / Batch Window</th>
                 <th className="px-5 py-4">Trek Name</th>
@@ -170,12 +180,12 @@ export default function HomePage() {
             </thead>
             <tbody>
               {trips.slice(0, 5).map((trip) => (
-                <tr key={trip.slug} className="border-t border-[#e1d7c8] text-sm text-[#334234]">
+                <tr key={trip.slug} className="border-t border-[#e1eef3] text-sm text-[#334952]">
                   <td className="px-5 py-4">{getBatchWindow(trip)}</td>
                   <td className="px-5 py-4">
                     <Link
                       href={`/tours/${trip.slug}`}
-                      className="font-semibold text-[#8a5c35] transition hover:text-[#d37a31]"
+                      className="font-semibold text-[#11639b] transition hover:text-[#2f7eb5]"
                     >
                       {trip.name}
                     </Link>
@@ -194,11 +204,11 @@ export default function HomePage() {
             <Link
               key={trip.slug}
               href={`/tours/${trip.slug}`}
-              className="rounded-[1.8rem] border border-[#d9cfbf] bg-[#f8f1e6] p-5 shadow-[0_20px_60px_rgba(30,36,27,0.08)]"
+              className="rounded-[2rem] bg-white p-5 shadow-[0_20px_60px_rgba(61,102,121,0.08)] ring-1 ring-[#d7e7ef]"
             >
-              <p className="text-xs uppercase tracking-[0.18em] text-[#8a5c35]">{getBatchWindow(trip)}</p>
-              <h3 className="mt-3 font-display text-3xl text-[#162214]">{trip.name}</h3>
-              <p className="mt-2 text-sm text-[#53594f]">
+              <p className="text-xs uppercase tracking-[0.18em] text-[#11639b]">{getBatchWindow(trip)}</p>
+              <h3 className="mt-3 font-display text-3xl text-[#0b1215]">{trip.name}</h3>
+              <p className="mt-2 text-sm text-[#4f6670]">
                 {trip.durationDays} Days | {trip.difficulty} | INR {trip.price.toLocaleString()}
               </p>
             </Link>
@@ -210,51 +220,25 @@ export default function HomePage() {
         <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div>
             <p className="section-tag">Upcoming Highlights</p>
-            <h2 className="mt-4 font-display text-4xl text-[#112315] sm:text-5xl">
+            <h2 className="mt-4 font-display text-4xl text-[#0b1215] sm:text-5xl">
               Signature departures currently shaping the season.
             </h2>
           </div>
           <Link
             href="/trips"
-            className="text-sm font-semibold text-[#8a5c35] transition hover:text-[#d37a31]"
+            className="text-sm font-semibold text-[#11639b] transition hover:text-[#2f7eb5]"
           >
             Explore all detailed trek pages
           </Link>
         </div>
 
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          {featuredTrips.map((trip) => (
-            <Link
-              key={trip.slug}
-              href={`/tours/${trip.slug}`}
-              className="group overflow-hidden rounded-[2rem] border border-[#d7cebf] bg-[#f7efe4] shadow-[0_24px_70px_rgba(31,38,26,0.08)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_30px_90px_rgba(31,38,26,0.14)]"
-            >
-              <div className="relative h-80 overflow-hidden">
-                <Image
-                  src={trip.heroImage}
-                  alt={trip.name}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 25vw"
-                  className="object-cover transition duration-700 group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/15 to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4">
-                  <p className="mb-3 w-fit rounded-full bg-black/35 px-3 py-1 text-[11px] uppercase tracking-[0.18em] text-[#f2dcc2]">
-                    {trip.destination}
-                  </p>
-                  <h3 className="font-display text-3xl text-white">{trip.name}</h3>
-                </div>
-              </div>
-              <div className="space-y-3 p-5">
-                <p className="text-sm leading-7 text-[#53584d]">{trip.summary}</p>
-                <div className="flex items-center justify-between text-sm font-semibold text-[#223224]">
-                  <span>{trip.durationDays} Days</span>
-                  <span>{trip.difficulty}</span>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
+        <UpcomingHighlightsCarousel
+          items={upcomingHighlights.map((trip) => ({
+            title: trip.name,
+            image: trip.heroImage,
+            href: `/tours/${trip.slug}`
+          }))}
+        />
       </section>
 
       <TestimonialsTabs />

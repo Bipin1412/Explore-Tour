@@ -4,6 +4,7 @@ out/
 .m2/
 .tmp/
 .tmp/**
+.codex-logs/
 
 .env
 .env.local
